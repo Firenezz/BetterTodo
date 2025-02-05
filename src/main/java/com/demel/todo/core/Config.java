@@ -1,4 +1,4 @@
-package com.myname.mymodid;
+package com.demel.todo.core;
 
 import java.io.File;
 

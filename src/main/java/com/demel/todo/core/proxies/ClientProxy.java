@@ -1,4 +1,4 @@
-package com.myname.mymodid;
+package com.demel.todo.core.proxies;
 
 public class ClientProxy extends CommonProxy {
 

@@ -1,23 +1,37 @@
-package com.myname.mymodid;
+package com.demel.todo.core;
+
+import net.minecraft.creativetab.CreativeTabs;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import com.demel.todo.core.proxies.CommonProxy;
+
+import betterquesting.client.CreativeTabQuesting;
 import cpw.mods.fml.common.Mod;
 import cpw.mods.fml.common.SidedProxy;
 import cpw.mods.fml.common.event.FMLInitializationEvent;
 import cpw.mods.fml.common.event.FMLPostInitializationEvent;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 import cpw.mods.fml.common.event.FMLServerStartingEvent;
+import cpw.mods.fml.common.event.FMLServerStoppedEvent;
 
-@Mod(modid = MyMod.MODID, version = Tags.VERSION, name = "MyMod", acceptedMinecraftVersions = "[1.7.10]")
-public class MyMod {
+@Mod(modid = Todo.MODID, version = Todo.VERSION, name = Todo.NAME, acceptedMinecraftVersions = "[1.7.10]")
+public class Todo {
 
-    public static final String MODID = "mymodid";
+    public static final String MODID = "todo";
+    public static final String NAME = "todo";
+    public static final String VERSION = betterquesting.core.Tags.VERSION;
+    public static final String PROXY = "todo.core.proxies";
+    public static final String CHANNEL = "TODO_NET_CHAN";
     public static final Logger LOG = LogManager.getLogger(MODID);
 
-    @SidedProxy(clientSide = "com.myname.mymodid.ClientProxy", serverSide = "com.myname.mymodid.CommonProxy")
+    @SidedProxy(
+        clientSide = "com.demel.todo.core.proxies.ClientProxy",
+        serverSide = "com.demel.todo.core.proxies.CommonProxy")
     public static CommonProxy proxy;
+
+    public static CreativeTabs tabQuesting = new CreativeTabQuesting();
 
     @Mod.EventHandler
     // preInit "Run before anything else. Read your config, create blocks, items, etc, and register them with the
@@ -42,5 +56,10 @@ public class MyMod {
     // register server commands in this event handler (Remove if not needed)
     public void serverStarting(FMLServerStartingEvent event) {
         proxy.serverStarting(event);
+    }
+
+    @Mod.EventHandler
+    public void serverStop(FMLServerStoppedEvent event) {
+
     }
 }
