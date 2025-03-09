@@ -1,18 +1,20 @@
 package dem.todolist.core;
 
+import betterquesting.core.BetterQuesting;
+import cpw.mods.fml.common.event.*;
+import dem.todolist.commands.ListTasksCommand;
+import dem.todolist.commands.NewTaskCommand;
+import net.minecraft.command.ICommandManager;
+import net.minecraft.command.ServerCommandManager;
 import net.minecraft.creativetab.CreativeTabs;
 
+import net.minecraft.server.MinecraftServer;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import betterquesting.client.CreativeTabQuesting;
 import cpw.mods.fml.common.Mod;
 import cpw.mods.fml.common.SidedProxy;
-import cpw.mods.fml.common.event.FMLInitializationEvent;
-import cpw.mods.fml.common.event.FMLPostInitializationEvent;
-import cpw.mods.fml.common.event.FMLPreInitializationEvent;
-import cpw.mods.fml.common.event.FMLServerStartingEvent;
-import cpw.mods.fml.common.event.FMLServerStoppedEvent;
 import dem.todolist.core.proxies.CommonProxy;
 
 @Mod(modid = Todo.MODID, version = Todo.VERSION, name = Todo.NAME, acceptedMinecraftVersions = "[1.7.10]")
@@ -27,6 +29,9 @@ public class Todo {
 
     @SidedProxy(clientSide = PROXY + ".ClientProxy", serverSide = PROXY + ".CommonProxy")
     public static CommonProxy proxy;
+
+    @Mod.Instance(MODID)
+    public static Todo INSTANCE;
 
     public static CreativeTabs tabQuesting = new CreativeTabQuesting();
 

@@ -2,10 +2,12 @@ package dem.todolist.todo;
 
 import java.util.*;
 
+import dem.todolist.api.api.TodoAPI;
 import net.minecraft.nbt.NBTTagCompound;
 
 import com.dem.chestlib.api.properties.IPropertyType;
 import com.dem.chestlib.storage.properties.PropertyContainer;
+import com.dem.chestlib.util.nbt.NBTUuidUtil;
 
 import dem.todolist.api.enums.TaskState;
 import dem.todolist.api.properties.TaskProps;
@@ -15,9 +17,6 @@ public class TaskInstance implements ITask {
 
     private final PropertyContainer taskInfo = new PropertyContainer();
 
-    private UUID id;
-    private Map<UUID, ITask> subTask;
-    private List<UUID> memCache;
     private ITask parent;
     private UUID uuidParent;
 
@@ -26,7 +25,7 @@ public class TaskInstance implements ITask {
     }
 
     public void refreshCache() {
-        memCache = Collections.unmodifiableList(new ArrayList<>(subTask.keySet()));
+        //memCache = Collections.unmodifiableList(new ArrayList<>(subTask.keySet()));
     }
 
     private void setupProps() {
@@ -55,8 +54,7 @@ public class TaskInstance implements ITask {
     }
 
     @Override
-    public void update() {
-    }
+    public void update() {}
 
     @Override
     public boolean is(TaskState state) {
@@ -64,10 +62,27 @@ public class TaskInstance implements ITask {
     }
 
     @Override
-    public NBTTagCompound writeToNBT(NBTTagCompound nbt) {
-        // first write fields
+    public void addSubTask(UUID uuid) {
+        /*if (!subTasks.contains(uuid)) {
+            subTasks.add(uuid);
+        } else {
+            TodoAPI.getLogger().debug("duplicate id detected: {}", uuid);
+        }*/
+    }
 
-        // then the property container
+    @Override
+    public String toChatMessage() {
+        return "Name: " + getProperty(TaskProps.NAME) + "\n" +
+            "Description: " + getProperty(TaskProps.DESC) + "\n" +
+            "State: " + getProperty(TaskProps.STATE).toString() + "\n";
+    }
+
+    @Override
+    public NBTTagCompound writeToNBT(NBTTagCompound nbt) {
+        if (uuidParent != null) {
+            NBTUuidUtil.writeIdToNbt("parent-", uuidParent, nbt);
+        }
+
         nbt.setTag("properties", taskInfo.writeToNBT(new NBTTagCompound()));
 
         return nbt;
@@ -75,7 +90,7 @@ public class TaskInstance implements ITask {
 
     @Override
     public void readFromNBT(NBTTagCompound nbt) {
-
+        taskInfo.readFromNBT(nbt.getCompoundTag("properties"));
     }
 
     @Override

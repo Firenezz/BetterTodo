@@ -33,8 +33,7 @@ public class TodoAPI {
         apis.put(key, api);
     }
 
-    @SuppressWarnings("unchecked")
-    public static <T> T getAPI(ApiKey<INameCache> key) {
+    public static <T> T getAPI(ApiKey<T> key) {
         Object obj = apis.get(key);
         return obj == null ? null : (T) obj;
     }

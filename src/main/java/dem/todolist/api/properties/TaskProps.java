@@ -1,12 +1,10 @@
 package dem.todolist.api.properties;
 
-import net.minecraft.nbt.NBTTagString;
 import net.minecraft.util.ResourceLocation;
 
 import com.dem.chestlib.api.properties.IPropertyType;
 import com.dem.chestlib.storage.properties.EnumerationType;
 import com.dem.chestlib.storage.properties.propertytypes.PropertyTypeEnum;
-import com.dem.chestlib.storage.properties.propertytypes.PropertyTypeListBuilder;
 import com.dem.chestlib.storage.properties.propertytypes.PropertyTypeString;
 
 import dem.todolist.api.enums.TaskState;

@@ -7,6 +7,8 @@ import com.dem.chestlib.api.storage.INBTSaveLoad;
 
 import dem.todolist.api.enums.TaskState;
 
+import java.util.UUID;
+
 public interface ITask extends INBTSaveLoad<NBTTagCompound>, IPropertyContainer {
 
     TaskState getState();
@@ -34,4 +36,8 @@ public interface ITask extends INBTSaveLoad<NBTTagCompound>, IPropertyContainer 
     default boolean isAbandoned() {
         return is(TaskState.Abandoned);
     }
+
+    void addSubTask(UUID uuid);
+
+    String toChatMessage();
 }
