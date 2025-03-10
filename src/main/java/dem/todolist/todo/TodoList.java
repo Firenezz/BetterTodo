@@ -1,23 +1,23 @@
 package dem.todolist.todo;
 
+import static dem.todolist.api.api.ApiReference.TASK_DB;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
-import com.dem.chestlib.util.nbt.NBTUuidUtil;
-import dem.todolist.api.api.TodoAPI;
-import dem.todolist.api.todo.task.ITaskDatabase;
 import net.minecraft.nbt.NBTTagCompound;
 
 import com.dem.chestlib.api.properties.IPropertyContainer;
 import com.dem.chestlib.api.properties.IPropertyType;
 import com.dem.chestlib.storage.properties.PropertyContainer;
+import com.dem.chestlib.util.nbt.NBTUuidUtil;
 
+import dem.todolist.api.api.TodoAPI;
 import dem.todolist.api.todo.ITodoList;
 import dem.todolist.api.todo.task.ITask;
-
-import static dem.todolist.api.api.ApiReference.TASK_DB;
+import dem.todolist.api.todo.task.ITaskDatabase;
 
 public class TodoList implements ITodoList {
 

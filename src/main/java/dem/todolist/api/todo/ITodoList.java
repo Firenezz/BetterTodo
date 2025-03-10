@@ -20,5 +20,4 @@ public interface ITodoList extends INBTSaveLoad<NBTTagCompound>, IPropertyContai
 
     void attachTask(UUID uuid);
 
-    
 }

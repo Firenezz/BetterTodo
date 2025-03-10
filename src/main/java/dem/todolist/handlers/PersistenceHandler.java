@@ -1,29 +1,22 @@
 package dem.todolist.handlers;
 
-import betterquesting.api.storage.BQ_Settings;
-import betterquesting.core.BetterQuesting;
-import betterquesting.handlers.SaveLoadHandler;
-import cpw.mods.fml.common.Mod;
-import cpw.mods.fml.common.event.FMLServerStartingEvent;
-import cpw.mods.fml.common.eventhandler.SubscribeEvent;
-import dem.todolist.handlers.persistence.DatabasePersistence;
-import dem.todolist.todo.TaskDatabase;
-import dem.todolist.utils.NBTUtils;
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.nbt.NBTTagList;
-import net.minecraft.nbt.NBTUtil;
-import net.minecraft.server.MinecraftServer;
-import net.minecraftforge.event.world.WorldEvent;
-
-import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Future;
 
-import static dem.todolist.core.TodoSettings.curWorldDir;
+import net.minecraft.server.MinecraftServer;
+import net.minecraftforge.event.world.WorldEvent;
+
+import betterquesting.api.storage.BQ_Settings;
+import betterquesting.core.BetterQuesting;
+import cpw.mods.fml.common.Mod;
+import cpw.mods.fml.common.event.FMLServerStartingEvent;
+import cpw.mods.fml.common.eventhandler.SubscribeEvent;
+import dem.todolist.handlers.persistence.DatabasePersistence;
 
 public class PersistenceHandler {
+
     public static PersistenceHandler INSTANCE = new PersistenceHandler();
 
     public void saveData() {

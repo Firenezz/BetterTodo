@@ -2,7 +2,6 @@ package dem.todolist.todo;
 
 import java.util.*;
 
-import dem.todolist.api.api.TodoAPI;
 import net.minecraft.nbt.NBTTagCompound;
 
 import com.dem.chestlib.api.properties.IPropertyType;
@@ -25,7 +24,7 @@ public class TaskInstance implements ITask {
     }
 
     public void refreshCache() {
-        //memCache = Collections.unmodifiableList(new ArrayList<>(subTask.keySet()));
+        // memCache = Collections.unmodifiableList(new ArrayList<>(subTask.keySet()));
     }
 
     private void setupProps() {
@@ -63,18 +62,25 @@ public class TaskInstance implements ITask {
 
     @Override
     public void addSubTask(UUID uuid) {
-        /*if (!subTasks.contains(uuid)) {
-            subTasks.add(uuid);
-        } else {
-            TodoAPI.getLogger().debug("duplicate id detected: {}", uuid);
-        }*/
+        /*
+         * if (!subTasks.contains(uuid)) {
+         * subTasks.add(uuid);
+         * } else {
+         * TodoAPI.getLogger().debug("duplicate id detected: {}", uuid);
+         * }
+         */
     }
 
     @Override
     public String toChatMessage() {
-        return "Name: " + getProperty(TaskProps.NAME) + "\n" +
-            "Description: " + getProperty(TaskProps.DESC) + "\n" +
-            "State: " + getProperty(TaskProps.STATE).toString() + "\n";
+        return "Name: " + getProperty(TaskProps.NAME)
+            + "\n"
+            + "Description: "
+            + getProperty(TaskProps.DESC)
+            + "\n"
+            + "State: "
+            + getProperty(TaskProps.STATE).toString()
+            + "\n";
     }
 
     @Override

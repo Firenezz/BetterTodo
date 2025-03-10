@@ -1,20 +1,22 @@
 package dem.todolist.handlers.persistence;
 
-import betterquesting.core.BetterQuesting;
-import dem.todolist.api.api.TodoAPI;
-import dem.todolist.core.TodoSettings;
-import dem.todolist.todo.TaskDatabase;
-import dem.todolist.utils.NBTUtils;
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.nbt.NBTTagList;
-import net.minecraft.server.MinecraftServer;
-
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.Future;
 
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.nbt.NBTTagList;
+import net.minecraft.server.MinecraftServer;
+
+import betterquesting.core.BetterQuesting;
+import dem.todolist.api.api.TodoAPI;
+import dem.todolist.core.TodoSettings;
+import dem.todolist.todo.TaskDatabase;
+import dem.todolist.utils.NBTUtils;
+
 public class DatabasePersistence {
+
     public static DatabasePersistence INSTANCE = new DatabasePersistence();
 
     private File fileDatabase = null;
@@ -38,7 +40,8 @@ public class DatabasePersistence {
 
         loadTasks();
 
-        TodoAPI.getLogger().info("Loaded " + TaskDatabase.INSTANCE.size() + " tasks");
+        TodoAPI.getLogger()
+            .info("Loaded " + TaskDatabase.INSTANCE.size() + " tasks");
     }
 
     public void loadTasks() {

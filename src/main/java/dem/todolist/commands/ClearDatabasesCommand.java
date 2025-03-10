@@ -1,16 +1,16 @@
 package dem.todolist.commands;
 
-import com.gtnewhorizon.gtnhlib.commands.GTNHClientCommand;
-import dem.todolist.api.properties.TaskProps;
-import dem.todolist.api.todo.task.ITask;
-import dem.todolist.handlers.persistence.DatabasePersistence;
-import dem.todolist.todo.TaskDatabase;
-import net.minecraft.command.ICommandSender;
-
 import java.util.Collections;
 import java.util.List;
 
+import net.minecraft.command.ICommandSender;
+
+import com.gtnewhorizon.gtnhlib.commands.GTNHClientCommand;
+
+import dem.todolist.handlers.persistence.DatabasePersistence;
+
 public class ClearDatabasesCommand extends GTNHClientCommand {
+
     @Override
     public String getCommandName() {
         return "todocleardb";

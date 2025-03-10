@@ -6,6 +6,7 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
 
 public class TodoThreadedIO {
+
     public static final TodoThreadedIO INSTANCE = new TodoThreadedIO();
     public static final TodoThreadedIO DISK_IO = new TodoThreadedIO() {
 

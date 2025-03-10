@@ -1,13 +1,13 @@
 package dem.todolist.api.todo.task;
 
+import java.util.UUID;
+
 import net.minecraft.nbt.NBTTagCompound;
 
 import com.dem.chestlib.api.properties.IPropertyContainer;
 import com.dem.chestlib.api.storage.INBTSaveLoad;
 
 import dem.todolist.api.enums.TaskState;
-
-import java.util.UUID;
 
 public interface ITask extends INBTSaveLoad<NBTTagCompound>, IPropertyContainer {
 

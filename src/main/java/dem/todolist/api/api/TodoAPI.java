@@ -12,8 +12,6 @@ import net.minecraft.server.MinecraftServer;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import betterquesting.api.storage.INameCache;
-
 /**
  * Storage for all the questing API hooks. Includes built-in and custom APIs
  */

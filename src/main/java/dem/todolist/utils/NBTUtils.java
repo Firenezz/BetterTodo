@@ -1,18 +1,19 @@
 package dem.todolist.utils;
 
-import betterquesting.api.api.QuestingAPI;
-import betterquesting.api2.utils.BQThreadedIO;
-import dem.todolist.api.api.TodoAPI;
-import net.minecraft.nbt.CompressedStreamTools;
-import net.minecraft.nbt.NBTTagCompound;
-import org.jetbrains.annotations.Nullable;
-
 import java.io.*;
 import java.nio.file.AtomicMoveNotSupportedException;
 import java.nio.file.Files;
 import java.nio.file.StandardCopyOption;
 import java.util.concurrent.Future;
-import java.util.zip.GZIPOutputStream;
+
+import net.minecraft.nbt.CompressedStreamTools;
+import net.minecraft.nbt.NBTTagCompound;
+
+import org.jetbrains.annotations.Nullable;
+
+import betterquesting.api.api.QuestingAPI;
+import betterquesting.api2.utils.BQThreadedIO;
+import dem.todolist.api.api.TodoAPI;
 
 public class NBTUtils {
 
@@ -28,10 +29,11 @@ public class NBTUtils {
         }
 
         try (var fos = new FileOutputStream(tmp)) {
-            //DataOutputStream dataoutputstream = new DataOutputStream(new BufferedOutputStream(fos))) {
-            //CompressedStreamTools.write(nbtTagCompound, dataoutputstream);
+            // DataOutputStream dataoutputstream = new DataOutputStream(new BufferedOutputStream(fos))) {
+            // CompressedStreamTools.write(nbtTagCompound, dataoutputstream);
             CompressedStreamTools.writeCompressed(nbtTagCompound, fos);
-            TodoAPI.getLogger().debug("NBT written");
+            TodoAPI.getLogger()
+                .debug("NBT written");
         } catch (Exception e) {
             TodoAPI.getLogger()
                 .error("An error occurred while saving NBT to file (File write):", e);
@@ -39,11 +41,8 @@ public class NBTUtils {
         }
 
         try {
-            Files.move(
-                tmp.toPath(),
-                file.toPath(),
-                StandardCopyOption.REPLACE_EXISTING,
-                StandardCopyOption.ATOMIC_MOVE);
+            Files
+                .move(tmp.toPath(), file.toPath(), StandardCopyOption.REPLACE_EXISTING, StandardCopyOption.ATOMIC_MOVE);
         } catch (AtomicMoveNotSupportedException ignored) {
             try {
                 Files.move(tmp.toPath(), file.toPath(), StandardCopyOption.REPLACE_EXISTING);

@@ -1,12 +1,6 @@
 package dem.todolist.core.proxies;
 
-import cpw.mods.fml.common.network.NetworkRegistry;
-import dem.todolist.api.api.ApiReference;
-import dem.todolist.commands.ClearDatabasesCommand;
-import dem.todolist.commands.NewTaskCommand;
-import dem.todolist.handlers.GuiHandler;
-import dem.todolist.handlers.PersistenceHandler;
-import dem.todolist.todo.TaskDatabase;
+import dem.todolist.network.PacketTypeRegistry;
 import net.minecraft.command.ICommandManager;
 import net.minecraft.command.ServerCommandManager;
 import net.minecraft.server.MinecraftServer;
@@ -17,11 +11,18 @@ import cpw.mods.fml.common.event.FMLInitializationEvent;
 import cpw.mods.fml.common.event.FMLPostInitializationEvent;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 import cpw.mods.fml.common.event.FMLServerStartingEvent;
+import cpw.mods.fml.common.network.NetworkRegistry;
+import dem.todolist.api.api.ApiReference;
 import dem.todolist.api.api.TodoAPI;
+import dem.todolist.commands.ClearDatabasesCommand;
+import dem.todolist.commands.NewTaskCommand;
 import dem.todolist.core.Config;
 import dem.todolist.core.Tags;
 import dem.todolist.core.Todo;
 import dem.todolist.handlers.EventHandler;
+import dem.todolist.handlers.GuiHandler;
+import dem.todolist.handlers.PersistenceHandler;
+import dem.todolist.todo.TaskDatabase;
 
 public class CommonProxy {
 
@@ -34,14 +35,17 @@ public class CommonProxy {
 
         registerHandlers();
 
+        PacketTypeRegistry.INSTANCE.registerHandlers();
+
         TodoAPI.registerAPI(ApiReference.TASK_DB, TaskDatabase.INSTANCE);
         FMLCommonHandler.instance()
             .bus()
             .register(EventHandler.INSTANCE); // TODO: use this maybe in the persistence
     }
 
-    public void registerHandlers(){
-        TodoAPI.getLogger().debug("Registering handlers");
+    public void registerHandlers() {
+        TodoAPI.getLogger()
+            .debug("Registering handlers");
         MinecraftForge.EVENT_BUS.register(EventHandler.INSTANCE);
         MinecraftForge.EVENT_BUS.register(PersistenceHandler.INSTANCE);
 

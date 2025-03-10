@@ -1,21 +1,16 @@
 package dem.todolist.core;
 
-import betterquesting.core.BetterQuesting;
-import cpw.mods.fml.common.event.*;
-import dem.todolist.commands.ListTasksCommand;
-import dem.todolist.commands.NewTaskCommand;
-import net.minecraft.command.ICommandManager;
-import net.minecraft.command.ServerCommandManager;
-import net.minecraft.creativetab.CreativeTabs;
-
-import net.minecraft.server.MinecraftServer;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import betterquesting.client.CreativeTabQuesting;
 import cpw.mods.fml.common.Mod;
 import cpw.mods.fml.common.SidedProxy;
+import cpw.mods.fml.common.event.*;
+import cpw.mods.fml.common.network.NetworkRegistry;
+import cpw.mods.fml.common.network.simpleimpl.SimpleNetworkWrapper;
+import cpw.mods.fml.relauncher.Side;
 import dem.todolist.core.proxies.CommonProxy;
+import dem.todolist.network.NetworkMessage;
 
 @Mod(modid = Todo.MODID, version = Todo.VERSION, name = Todo.NAME, acceptedMinecraftVersions = "[1.7.10]")
 public class Todo {
@@ -32,14 +27,19 @@ public class Todo {
 
     @Mod.Instance(MODID)
     public static Todo INSTANCE;
-
-    public static CreativeTabs tabQuesting = new CreativeTabQuesting();
+    public SimpleNetworkWrapper network;
+    public static Logger logger;
 
     @Mod.EventHandler
     // preInit "Run before anything else. Read your config, create blocks, items, etc, and register them with the
     // GameRegistry." (Remove if not needed)
     public void preInit(FMLPreInitializationEvent event) {
+        network = NetworkRegistry.INSTANCE.newSimpleChannel(CHANNEL);
+
         proxy.preInit(event);
+
+        network.registerMessage(NetworkMessage.HandleClient.class, NetworkMessage.class, 0, Side.CLIENT);
+        network.registerMessage(NetworkMessage.HandleServer.class, NetworkMessage.class, 0, Side.SERVER);
     }
 
     @Mod.EventHandler
