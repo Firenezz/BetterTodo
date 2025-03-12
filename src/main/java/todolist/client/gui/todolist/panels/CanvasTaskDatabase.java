@@ -1,6 +1,9 @@
 package todolist.client.gui.todolist.panels;
 
-import java.util.*;
+import java.util.ArrayDeque;
+import java.util.Iterator;
+import java.util.Map;
+import java.util.UUID;
 
 import betterquesting.api.utils.UuidConverter;
 import betterquesting.api2.client.gui.misc.IGuiRect;

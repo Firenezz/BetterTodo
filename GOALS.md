@@ -22,3 +22,5 @@ The mod should be able to:
 - Markdown description renderer
 - Open Computers integration
 - Extensible
+
+- Markdown generator that takes commands and configs documentation and turn them in Markdown documentation

@@ -1,6 +1,6 @@
 package chestlib.storage.properties.propertytypes;
 
-import java.util.*;
+import java.util.List;
 
 import net.minecraft.nbt.NBTBase;
 import net.minecraft.util.ResourceLocation;

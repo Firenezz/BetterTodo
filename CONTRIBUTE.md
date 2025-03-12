@@ -19,14 +19,14 @@
 ### Building the Project
 
 1. Update the build script:
-   ```
+   `
    ./gradlew updateBuildScript
-   ```
+   `
 
 2. Build the project:
-   ```
+   `
    ./gradlew build --build-cache
-   ```
+   `
    The `--build-cache` flag speeds up builds by caching compiled files
    [Documentation](https://docs.gradle.org/current/userguide/build_cache.html).
 
@@ -67,6 +67,14 @@ To resolve these:
    Include pictures/graphs if necessary. If there is a related issue, link it.
 
 6. Address review problems. Resolve merge conflicts. Wait for the final merge.
+
+### Run the mod
+Run `./gradlew runClient` or `./gradlew runClient17` or `./gradlew runClient21` to run the client
+
+Run `./gradlew runServer` or `./gradlew runServer17` or `./gradlew runServer21` to run the server
+
+### Tips
+- Use double shift to find classes if you use IDEA Intellij
 
 ### Best Practices
 
