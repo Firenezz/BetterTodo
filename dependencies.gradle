@@ -41,5 +41,5 @@ dependencies {
 
     api("com.github.GTNewHorizons:BetterQuesting:3.7.3-GTNH:dev")
 
-    implementation("com.github.GTNewHorizons:ChestLib:99.99:dev")
+    //implementation("com.github.GTNewHorizons:ChestLib:99.99:dev")
 }
