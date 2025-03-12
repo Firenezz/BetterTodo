@@ -8,8 +8,6 @@ import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.ResourceLocation;
 
-import betterquesting.api.api.ApiReference;
-import betterquesting.api.api.QuestingAPI;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import dem.todolist.api.network.NetworkPacket;
@@ -45,7 +43,6 @@ public class NetBulkSync {
 
     public static void sendSync(@Nonnull EntityPlayerMP player) {
         NetTaskSync.sendSync(player);
-
 
     }
 

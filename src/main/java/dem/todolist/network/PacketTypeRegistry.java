@@ -3,7 +3,6 @@ package dem.todolist.network;
 import java.util.HashMap;
 import java.util.function.Consumer;
 
-import dem.todolist.network.handlers.NetTaskSync;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.ResourceLocation;
@@ -14,6 +13,7 @@ import org.jetbrains.annotations.Nullable;
 import dem.todolist.api.network.IPacketRegistry;
 import dem.todolist.network.handlers.NetBulkSync;
 import dem.todolist.network.handlers.NetTaskCreate;
+import dem.todolist.network.handlers.NetTaskSync;
 import dem.todolist.utils.GenericTuple;
 
 public class PacketTypeRegistry implements IPacketRegistry {
