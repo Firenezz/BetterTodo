@@ -1,7 +1,5 @@
 package dem.todolist.network;
 
-import static dem.todolist.core.Todo.logger;
-
 import java.util.concurrent.Executors;
 import java.util.function.Consumer;
 
@@ -18,6 +16,7 @@ import cpw.mods.fml.common.network.simpleimpl.IMessage;
 import cpw.mods.fml.common.network.simpleimpl.IMessageHandler;
 import cpw.mods.fml.common.network.simpleimpl.MessageContext;
 import dem.todolist.api.api.TodoAPI;
+import dem.todolist.core.Todo;
 import dem.todolist.handlers.EventHandler;
 import dem.todolist.utils.GenericTuple;
 import io.netty.buffer.ByteBuf;
@@ -51,7 +50,7 @@ public class NetworkMessage implements IMessage {
         @Override
         public IMessage onMessage(NetworkMessage packet, MessageContext ctx) {
             if (packet == null || packet.tags == null || ctx.getServerHandler().playerEntity.mcServer == null) {
-                logger.log(
+                Todo.LOG.log(
                     Level.ERROR,
                     "A critical NPE error occured during while handling a TodoList packet server side",
                     new NullPointerException());
@@ -65,7 +64,7 @@ public class NetworkMessage implements IMessage {
             if (message == null) {
                 return null;
             } else if (!message.hasKey("ID")) {
-                logger.log(Level.WARN, "Received a packet server side without an ID");
+                Todo.LOG.log(Level.WARN, "Received a packet server side without an ID");
                 return null;
             }
 
@@ -73,7 +72,7 @@ public class NetworkMessage implements IMessage {
                 .getServerHandler(new ResourceLocation(message.getString("ID")));
 
             if (method == null) {
-                logger
+                Todo.LOG
                     .log(Level.WARN, "Received a packet server side with an invalid ID: " + message.getString("ID"));
                 return null;
             } else if (sender != null) {
@@ -90,7 +89,7 @@ public class NetworkMessage implements IMessage {
         @Override
         public IMessage onMessage(NetworkMessage packet, MessageContext ctx) {
             if (packet == null || packet.tags == null) {
-                logger.log(
+                Todo.LOG.log(
                     Level.ERROR,
                     "A critical NPE error occured during while handling a TodoList packet client side",
                     new NullPointerException());
@@ -102,7 +101,7 @@ public class NetworkMessage implements IMessage {
             if (message == null) {
                 return null;
             } else if (!message.hasKey("ID")) {
-                logger.log(Level.WARN, "Received a packet client side without an ID");
+                Todo.LOG.log(Level.WARN, "Received a packet client side without an ID");
                 return null;
             }
 
@@ -110,7 +109,8 @@ public class NetworkMessage implements IMessage {
                 .getClientHandler(new ResourceLocation(message.getString("ID")));
 
             if (method == null) {
-                logger.log(Level.WARN, "Received a packet client side with an invalid ID: " + message.getString("ID"));
+                Todo.LOG
+                    .log(Level.WARN, "Received a packet client side with an invalid ID: " + message.getString("ID"));
                 return null;
             } else {
                 Minecraft.getMinecraft()

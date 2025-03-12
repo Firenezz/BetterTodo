@@ -9,9 +9,9 @@ import net.minecraft.nbt.NBTTagList;
 
 import org.jetbrains.annotations.Nullable;
 
+import com.dem.chestlib.api.database.UuidDatabase;
 import com.dem.chestlib.util.nbt.NBTUuidUtil;
 
-import betterquesting.api2.storage.UuidDatabase;
 import dem.todolist.api.api.TodoAPI;
 import dem.todolist.api.todo.task.ITask;
 import dem.todolist.api.todo.task.ITaskDatabase;
@@ -44,11 +44,11 @@ public class TaskDatabase extends UuidDatabase<ITask> implements ITaskDatabase {
                 return;
             }
 
-            NBTTagCompound jq = new NBTTagCompound();
+            NBTTagCompound tag = new NBTTagCompound();
             entry.getValue()
-                .writeToNBT(jq);
-            NBTUuidUtil.writeIdToNbt(entry.getKey(), jq);
-            nbt.appendTag(jq);
+                .writeToNBT(tag);
+            NBTUuidUtil.writeIdToNbt(entry.getKey(), tag);
+            nbt.appendTag(tag);
         });
 
         return nbt;
@@ -77,4 +77,5 @@ public class TaskDatabase extends UuidDatabase<ITask> implements ITaskDatabase {
             task.readFromNBT(qTag);
         }
     }
+
 }

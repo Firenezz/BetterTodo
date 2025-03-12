@@ -28,7 +28,6 @@ public class Todo {
     @Mod.Instance(MODID)
     public static Todo INSTANCE;
     public SimpleNetworkWrapper network;
-    public static Logger logger;
 
     @Mod.EventHandler
     // preInit "Run before anything else. Read your config, create blocks, items, etc, and register them with the

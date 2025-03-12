@@ -1,6 +1,5 @@
 package dem.todolist.core.proxies;
 
-import dem.todolist.network.PacketTypeRegistry;
 import net.minecraft.command.ICommandManager;
 import net.minecraft.command.ServerCommandManager;
 import net.minecraft.server.MinecraftServer;
@@ -22,6 +21,7 @@ import dem.todolist.core.Todo;
 import dem.todolist.handlers.EventHandler;
 import dem.todolist.handlers.GuiHandler;
 import dem.todolist.handlers.PersistenceHandler;
+import dem.todolist.network.PacketTypeRegistry;
 import dem.todolist.todo.TaskDatabase;
 
 public class CommonProxy {

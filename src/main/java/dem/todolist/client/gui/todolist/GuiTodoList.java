@@ -1,22 +1,13 @@
 package dem.todolist.client.gui.todolist;
 
-import java.util.Collection;
 import java.util.Collections;
 import java.util.Map;
 import java.util.UUID;
+import java.util.function.Consumer;
 
-import betterquesting.api.utils.NBTConverter;
-import betterquesting.network.handlers.NetQuestEdit;
-import com.dem.chestlib.util.nbt.NBTUuidUtil;
-import dem.todolist.api.enums.TaskState;
-import dem.todolist.api.properties.TaskProps;
-import dem.todolist.network.handlers.NetTaskCreate;
-import dem.todolist.todo.TaskInstance;
-import dem.todolist.utils.NBTUtils;
 import net.minecraft.client.gui.GuiScreen;
 
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.nbt.NBTTagList;
+import org.jetbrains.annotations.NotNull;
 import org.lwjgl.input.Keyboard;
 
 import betterquesting.api.client.gui.misc.INeedsRefresh;
@@ -42,12 +33,18 @@ import betterquesting.api2.client.gui.themes.presets.PresetColor;
 import betterquesting.api2.client.gui.themes.presets.PresetIcon;
 import betterquesting.api2.client.gui.themes.presets.PresetTexture;
 import betterquesting.api2.utils.QuestTranslation;
+import dem.todolist.api.enums.TaskState;
+import dem.todolist.api.properties.TaskProps;
 import dem.todolist.api.todo.task.ITask;
 import dem.todolist.client.gui.todolist.panels.CanvasTaskDatabase;
+import dem.todolist.network.handlers.NetTaskCreate;
+import dem.todolist.todo.TaskInstance;
 
 public class GuiTodoList extends GuiScreenCanvas implements IPEventListener, INeedsRefresh {
 
     private CanvasTaskDatabase canvasDB;
+
+    private static final int ID_BTN_EDIT = 1;
 
     public GuiTodoList(GuiScreen parent) {
         super(parent);
@@ -57,7 +54,7 @@ public class GuiTodoList extends GuiScreenCanvas implements IPEventListener, INe
     public void initPanel() {
         super.initPanel();
 
-        PEventBroadcaster.INSTANCE.register(this, PEventButton.class);
+        PEventBroadcaster.INSTANCE.register((Consumer<PanelEvent>) this::onPanelEvent, PEventButton.class);
         Keyboard.enableRepeatEvents(true);
 
         // General panel
@@ -86,7 +83,7 @@ public class GuiTodoList extends GuiScreenCanvas implements IPEventListener, INe
 
         // Right panel
 
-        CanvasEmpty cvRight = new CanvasEmpty(new GuiTransform(GuiAlign.HALF_RIGHT, new GuiPadding(8, 32, 16, 24), 0));
+        CanvasEmpty cvRight = new CanvasEmpty(new GuiTransform(GuiAlign.FULL_BOX, new GuiPadding(8, 32, 16, 24), 0));
         cvBackground.addPanel(cvRight);
 
         PanelTextBox txtDb = new PanelTextBox(
@@ -117,7 +114,7 @@ public class GuiTodoList extends GuiScreenCanvas implements IPEventListener, INe
 
                 PanelButtonStorage<Map.Entry<UUID, ITask>> btnEdit = new PanelButtonStorage<>(
                     new GuiRectangle(16, index * 16, width - 32, 16, 0),
-                    1,
+                    ID_BTN_EDIT,
                     "test", // QuestTranslation.translateQuestName(entry),
                     entry);
                 this.addPanel(btnEdit);
@@ -159,16 +156,22 @@ public class GuiTodoList extends GuiScreenCanvas implements IPEventListener, INe
         }
     }
 
-    private void onButtonPress(PEventButton event) {
+    @SuppressWarnings("unchecked")
+    private void onButtonPress(@NotNull PEventButton event) {
         IPanelButton btn = event.getButton();
 
         switch (btn.getButtonID()) {
+            case ID_BTN_EDIT:
+                Map.Entry<UUID, ITask> entry = ((PanelButtonStorage<Map.Entry<UUID, ITask>>) btn).getStoredValue();
+                this.openPopup(new GuiTaskDetail(entry.getValue()));
+                break;
             case 5:
                 var task = new TaskInstance();
                 task.setProperty(TaskProps.STATE, TaskState.Abandoned);
                 task.setProperty(TaskProps.NAME, "Test from book.");
 
                 NetTaskCreate.sendCreate(Collections.singletonList(task));
+                break;
         }
     }
 }

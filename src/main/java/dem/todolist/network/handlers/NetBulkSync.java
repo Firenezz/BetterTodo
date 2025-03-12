@@ -3,10 +3,6 @@ package dem.todolist.network.handlers;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
-import dem.todolist.api.network.NetworkPacket;
-import dem.todolist.core.Todo;
-import dem.todolist.network.PacketSender;
-import dem.todolist.network.PacketTypeRegistry;
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.nbt.NBTTagCompound;
@@ -16,7 +12,11 @@ import betterquesting.api.api.ApiReference;
 import betterquesting.api.api.QuestingAPI;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
+import dem.todolist.api.network.NetworkPacket;
+import dem.todolist.core.Todo;
 import dem.todolist.handlers.persistence.DatabasePersistence;
+import dem.todolist.network.PacketSender;
+import dem.todolist.network.PacketTypeRegistry;
 import dem.todolist.utils.GenericTuple;
 
 public class NetBulkSync {
@@ -44,8 +44,8 @@ public class NetBulkSync {
     }
 
     public static void sendSync(@Nonnull EntityPlayerMP player) {
-        QuestingAPI.getAPI(ApiReference.NAME_CACHE)
-            .updateName(player);
+        NetTaskSync.sendSync(player);
+
 
     }
 

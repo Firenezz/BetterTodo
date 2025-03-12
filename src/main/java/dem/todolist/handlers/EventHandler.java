@@ -6,8 +6,6 @@ import java.util.ArrayDeque;
 import java.util.concurrent.Callable;
 import java.util.concurrent.FutureTask;
 
-import cpw.mods.fml.common.gameevent.PlayerEvent;
-import dem.todolist.network.handlers.NetBulkSync;
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.server.MinecraftServer;
@@ -25,12 +23,14 @@ import betterquesting.api.questing.party.IPartyDatabase;
 import betterquesting.api2.storage.DBEntry;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import cpw.mods.fml.common.gameevent.InputEvent;
+import cpw.mods.fml.common.gameevent.PlayerEvent;
 import cpw.mods.fml.common.gameevent.TickEvent;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import dem.todolist.client.TodoKeybindings;
 import dem.todolist.client.gui.todolist.GuiTodoList;
 import dem.todolist.core.Todo;
+import dem.todolist.network.handlers.NetBulkSync;
 
 /// Event handling for standard quests and core BetterQuesting functionality
 public class EventHandler {
@@ -65,12 +65,11 @@ public class EventHandler {
 
     @SubscribeEvent
     public void onPlayerJoin(PlayerEvent.PlayerLoggedInEvent event) {
-        if (event.player.worldObj.isRemote || MinecraftServer.getServer() == null || !(event.player instanceof EntityPlayerMP entityPlayerMP)) return;
+        if (event.player.worldObj.isRemote || MinecraftServer.getServer() == null
+            || !(event.player instanceof EntityPlayerMP entityPlayerMP)) return;
 
-        if (Todo.proxy.isClient()
-            && !MinecraftServer
-                .getServer()
-                .isDedicatedServer()
+        if (Todo.proxy.isClient() && !MinecraftServer.getServer()
+            .isDedicatedServer()
             && MinecraftServer.getServer()
                 .getServerOwner()
                 .equals(
@@ -81,6 +80,7 @@ public class EventHandler {
 
         NetBulkSync.sendReset(entityPlayerMP, true, true); // Make sure the player is synced
     }
+
     @SubscribeEvent
     public void onServerTick(TickEvent.ServerTickEvent event) {
         if (event.phase == TickEvent.Phase.START) {

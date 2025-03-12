@@ -1,8 +1,14 @@
 package dem.todolist.api.todo.task;
 
+import static dem.todolist.api.properties.TaskProps.*;
+
+import java.util.Collection;
+import java.util.Optional;
 import java.util.UUID;
 
 import net.minecraft.nbt.NBTTagCompound;
+
+import org.jetbrains.annotations.NotNull;
 
 import com.dem.chestlib.api.properties.IPropertyContainer;
 import com.dem.chestlib.api.storage.INBTSaveLoad;
@@ -11,11 +17,23 @@ import dem.todolist.api.enums.TaskState;
 
 public interface ITask extends INBTSaveLoad<NBTTagCompound>, IPropertyContainer {
 
-    TaskState getState();
+    UUID getID();
 
-    void update();
+    void addSubTasks(@NotNull Iterable<UUID> uuids);
 
-    boolean is(TaskState state);
+    Optional<UUID> getParentID();
+
+    Optional<ITask> getParent();
+
+    Collection<UUID> getChildrensIDs();
+
+    Collection<ITask> getChildrens();
+
+    String toChatMessage();
+
+    default boolean is(TaskState state) {
+        return getState() == state;
+    }
 
     default boolean isCompleted() {
         return is(TaskState.Completed);
@@ -37,7 +55,39 @@ public interface ITask extends INBTSaveLoad<NBTTagCompound>, IPropertyContainer 
         return is(TaskState.Abandoned);
     }
 
-    void addSubTask(UUID uuid);
+    default String getName() {
+        return getProperty(NAME);
+    }
 
-    String toChatMessage();
+    default void setName(String name) {
+        setProperty(NAME, name);
+    }
+
+    default boolean hasName() {
+        return hasProperty(NAME);
+    }
+
+    default String getDescription() {
+        return getProperty(DESC);
+    }
+
+    default void setDescription(String description) {
+        setProperty(DESC, description);
+    }
+
+    default boolean hasDescription() {
+        return hasProperty(DESC);
+    }
+
+    default TaskState getState() {
+        return getProperty(STATE);
+    }
+
+    default void setState(TaskState state) {
+        setProperty(STATE, state);
+    }
+
+    default boolean hasState() {
+        return hasProperty(STATE);
+    }
 }

@@ -1,5 +1,16 @@
 package dem.todolist.network.handlers;
 
+import java.util.Collection;
+
+import javax.annotation.Nonnull;
+
+import net.minecraft.client.Minecraft;
+import net.minecraft.entity.player.EntityPlayerMP;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.nbt.NBTTagList;
+import net.minecraft.server.MinecraftServer;
+import net.minecraft.util.ResourceLocation;
+
 import betterquesting.api.api.QuestingAPI;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
@@ -11,18 +22,9 @@ import dem.todolist.network.PacketSender;
 import dem.todolist.network.PacketTypeRegistry;
 import dem.todolist.todo.TaskDatabase;
 import dem.todolist.utils.GenericTuple;
-import net.minecraft.client.Minecraft;
-import net.minecraft.entity.player.EntityPlayerMP;
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.nbt.NBTTagList;
-import net.minecraft.server.MinecraftServer;
-import net.minecraft.util.ResourceLocation;
-
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
-import java.util.Collection;
 
 public class NetTaskCreate {
+
     private static final ResourceLocation ID_NAME = new ResourceLocation("todolist:task_create");
 
     public static void registerHandler() {
@@ -61,6 +63,8 @@ public class NetTaskCreate {
         NBTTagCompound tag = message.getFirst();
         var _senderID = QuestingAPI.getQuestingUUID(sender);
         createTasks(tag.getTagList("data", 10));
+
+        NetTaskSync.sendSync(sender);
     }
 
     private static void createTasks(NBTTagList data) {

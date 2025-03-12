@@ -1,22 +1,29 @@
 package dem.todolist.todo;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 import net.minecraft.nbt.NBTTagCompound;
+
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import com.dem.chestlib.api.properties.IPropertyType;
 import com.dem.chestlib.storage.properties.PropertyContainer;
 import com.dem.chestlib.util.nbt.NBTUuidUtil;
 
-import dem.todolist.api.enums.TaskState;
 import dem.todolist.api.properties.TaskProps;
 import dem.todolist.api.todo.task.ITask;
+import dem.todolist.api.todo.task.ITaskDatabase;
+import dem.todolist.core.Todo;
 
 public class TaskInstance implements ITask {
 
     private final PropertyContainer taskInfo = new PropertyContainer();
 
-    private ITask parent;
+    private static final ITaskDatabase DB = TaskDatabase.INSTANCE;
+
+    @Nullable
     private UUID uuidParent;
 
     public TaskInstance() {
@@ -33,6 +40,8 @@ public class TaskInstance implements ITask {
 
         setupValue(TaskProps.STATE);
 
+        setupValue(TaskProps.ASSIGNEE, Optional.of(UUID.randomUUID()));
+
     }
 
     private <T> void setupValue(IPropertyType<T> prop) {
@@ -44,24 +53,20 @@ public class TaskInstance implements ITask {
     }
 
     @Override
-    public TaskState getState() {
-        return taskInfo.getProperty(TaskProps.STATE);
-    }
-
-    public void setState(TaskState newState) {
-        taskInfo.setProperty(TaskProps.STATE, newState);
+    public UUID getID() {
+        return DB.inverse()
+            .get(this);
     }
 
     @Override
-    public void update() {}
-
-    @Override
-    public boolean is(TaskState state) {
-        return getState() == state;
-    }
-
-    @Override
-    public void addSubTask(UUID uuid) {
+    public void addSubTasks(@NotNull Iterable<UUID> uuids) {
+        for (UUID uuid : uuids) {
+            if (!false) {
+                // placeholder
+            } else {
+                Todo.LOG.debug("duplicate id detected: {}", uuid);
+            }
+        }
         /*
          * if (!subTasks.contains(uuid)) {
          * subTasks.add(uuid);
@@ -84,9 +89,35 @@ public class TaskInstance implements ITask {
     }
 
     @Override
+    public Optional<UUID> getParentID() {
+        return Optional.ofNullable(uuidParent);
+    }
+
+    @Override
+    public Optional<ITask> getParent() {
+        if (getParentID().isPresent() && DB.containsKey(uuidParent)) {
+            return Optional.of(DB.get(uuidParent));
+        }
+        return Optional.empty();
+    }
+
+    @Override
+    public Collection<UUID> getChildrensIDs() {
+        return Collections.emptyList();
+    }
+
+    @Override
+    public Collection<ITask> getChildrens() {
+        return Collections.unmodifiableCollection(
+            getChildrensIDs().stream()
+                .map((DB::get))
+                .collect(Collectors.toList()));
+    }
+
+    @Override
     public NBTTagCompound writeToNBT(NBTTagCompound nbt) {
         if (uuidParent != null) {
-            NBTUuidUtil.writeIdToNbt("parent-", uuidParent, nbt);
+            NBTUuidUtil.writeIdToNbt("p", uuidParent, nbt);
         }
 
         nbt.setTag("properties", taskInfo.writeToNBT(new NBTTagCompound()));
@@ -96,6 +127,9 @@ public class TaskInstance implements ITask {
 
     @Override
     public void readFromNBT(NBTTagCompound nbt) {
+        uuidParent = NBTUuidUtil.tryReadFromNbt("p", nbt)
+            .orElse(null);
+
         taskInfo.readFromNBT(nbt.getCompoundTag("properties"));
     }
 
