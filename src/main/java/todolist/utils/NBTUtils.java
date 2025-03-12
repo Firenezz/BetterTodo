@@ -13,6 +13,7 @@ import java.util.concurrent.Future;
 import net.minecraft.nbt.CompressedStreamTools;
 import net.minecraft.nbt.NBTTagCompound;
 
+import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import betterquesting.api.api.QuestingAPI;
@@ -96,14 +97,14 @@ public class NBTUtils {
         }
     }
 
-    private static void checkAndCreateFile(File file) throws IOException {
+    private static void checkAndCreateFile(@NotNull File file) throws IOException {
         if (file.getParentFile() != null) {
-            file.getParentFile()
+            final boolean _var = file.getParentFile()
                 .mkdirs();
         }
         if (!file.createNewFile()) {
-            file.delete();
-            file.createNewFile();
+            final boolean _var1 = file.delete();
+            final boolean _var2 = file.createNewFile();
         }
     }
 }

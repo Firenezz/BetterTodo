@@ -17,6 +17,7 @@ import todolist.core.proxies.CommonProxy;
 import todolist.network.NetworkMessage;
 
 @Mod(modid = Todo.MODID, version = Todo.VERSION, name = Todo.NAME, acceptedMinecraftVersions = "[1.7.10]")
+@SuppressWarnings("unused")
 public class Todo {
 
     public static final String MODID = "todolist";

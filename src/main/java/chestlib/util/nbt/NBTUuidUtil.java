@@ -63,6 +63,7 @@ public class NBTUuidUtil {
         return new UUID(high, low);
     }
 
+    @SuppressWarnings("unused")
     public static List<UUID> readIds(NBTTagCompound tag, String key) {
         return readIds(tag.getTagList(key, Constants.NBT.TAG_COMPOUND));
     }

@@ -6,6 +6,7 @@ import net.minecraft.nbt.NBTBase;
 import net.minecraft.util.ResourceLocation;
 
 /// Not ready yet
+@SuppressWarnings("unused")
 public class PropertyTypeList<TValue> extends PropertyTypeBase<List<TValue>> {
 
     private final Class<TValue> valueType;
