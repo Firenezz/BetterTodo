@@ -36,9 +36,15 @@ public class GuiTaskDetail extends CanvasEmpty implements INeedsRefresh {
 
     }
 
+
+
+
+
+
+
     @Override
     public void refreshGui() {
-
+        // Test
     }
 
     @Override
