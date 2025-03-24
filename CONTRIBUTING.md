@@ -23,7 +23,15 @@
    ./gradlew updateBuildScript
    `
 
-2. Build the project:
+2. If this is the first time setting up of your workspace, make sure to run:
+
+   2.1 `./gradlew updateDependencies`
+
+   2.2 `./gradlew setupDecomp`
+
+   2.3 `./gradlew setupDecompWorkspace`
+
+3. Build the project:
    `
    ./gradlew build --build-cache
    `
