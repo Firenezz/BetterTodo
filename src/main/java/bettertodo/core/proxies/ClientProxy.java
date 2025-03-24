@@ -2,9 +2,9 @@ package bettertodo.core.proxies;
 
 import net.minecraftforge.client.ClientCommandHandler;
 
-import cpw.mods.fml.common.event.FMLInitializationEvent;
 import bettertodo.client.TodoKeybindings;
 import bettertodo.commands.ListTasksCommand;
+import cpw.mods.fml.common.event.FMLInitializationEvent;
 
 public class ClientProxy extends CommonProxy {
 

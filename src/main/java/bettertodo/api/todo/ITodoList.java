@@ -5,9 +5,9 @@ import java.util.UUID;
 
 import net.minecraft.nbt.NBTTagCompound;
 
+import bettertodo.api.todo.task.ITask;
 import chestlib.api.properties.IPropertyContainer;
 import chestlib.api.storage.INBTSaveLoad;
-import bettertodo.api.todo.task.ITask;
 
 public interface ITodoList extends INBTSaveLoad<NBTTagCompound>, IPropertyContainer {
 

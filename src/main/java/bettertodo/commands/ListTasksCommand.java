@@ -8,11 +8,11 @@ import net.minecraft.entity.player.EntityPlayer;
 
 import com.gtnewhorizon.gtnhlib.commands.GTNHClientCommand;
 
+import bettertodo.core.Todo;
+import bettertodo.handlers.GuiHandler;
 import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import cpw.mods.fml.common.gameevent.TickEvent;
-import bettertodo.core.Todo;
-import bettertodo.handlers.GuiHandler;
 
 public class ListTasksCommand extends GTNHClientCommand {
 

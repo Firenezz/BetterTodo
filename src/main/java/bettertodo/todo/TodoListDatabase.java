@@ -9,11 +9,11 @@ import net.minecraft.nbt.NBTTagList;
 
 import org.jetbrains.annotations.Nullable;
 
-import chestlib.api.database.UuidDatabase;
-import chestlib.util.nbt.NBTUuidUtil;
 import bettertodo.api.api.BetterTodoAPI;
 import bettertodo.api.todo.ITodoList;
 import bettertodo.api.todo.todolist.ITodoListDatabase;
+import chestlib.api.database.UuidDatabase;
+import chestlib.util.nbt.NBTUuidUtil;
 
 public class TodoListDatabase extends UuidDatabase<ITodoList> implements ITodoListDatabase {
 

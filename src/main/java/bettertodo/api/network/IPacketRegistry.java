@@ -9,9 +9,9 @@ import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.ResourceLocation;
 
+import bettertodo.utils.GenericTuple;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
-import bettertodo.utils.GenericTuple;
 
 /// Registry for client/server handling
 public interface IPacketRegistry {

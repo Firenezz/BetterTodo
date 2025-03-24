@@ -10,10 +10,10 @@ import net.minecraftforge.event.world.WorldEvent;
 
 import betterquesting.api.storage.BQ_Settings;
 import betterquesting.core.BetterQuesting;
+import bettertodo.handlers.persistence.DatabasePersistence;
 import cpw.mods.fml.common.Mod;
 import cpw.mods.fml.common.event.FMLServerStartingEvent;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
-import bettertodo.handlers.persistence.DatabasePersistence;
 
 public class PersistenceHandler {
 

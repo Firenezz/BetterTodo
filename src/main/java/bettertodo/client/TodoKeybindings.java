@@ -4,8 +4,8 @@ import net.minecraft.client.settings.KeyBinding;
 
 import org.lwjgl.input.Keyboard;
 
-import cpw.mods.fml.client.registry.ClientRegistry;
 import bettertodo.core.Todo;
+import cpw.mods.fml.client.registry.ClientRegistry;
 
 public class TodoKeybindings {
 

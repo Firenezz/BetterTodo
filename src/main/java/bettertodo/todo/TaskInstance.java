@@ -11,13 +11,13 @@ import net.minecraft.nbt.NBTTagCompound;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-import chestlib.api.properties.IPropertyType;
-import chestlib.storage.properties.PropertyContainer;
-import chestlib.util.nbt.NBTUuidUtil;
 import bettertodo.api.properties.TaskProps;
 import bettertodo.api.todo.task.ITask;
 import bettertodo.api.todo.task.ITaskDatabase;
 import bettertodo.core.Todo;
+import chestlib.api.properties.IPropertyType;
+import chestlib.storage.properties.PropertyContainer;
+import chestlib.util.nbt.NBTUuidUtil;
 
 public class TaskInstance implements ITask {
 

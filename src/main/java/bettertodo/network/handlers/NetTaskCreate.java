@@ -12,8 +12,6 @@ import net.minecraft.server.MinecraftServer;
 import net.minecraft.util.ResourceLocation;
 
 import betterquesting.api.api.QuestingAPI;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 import bettertodo.api.network.NetworkPacket;
 import bettertodo.api.todo.task.ITask;
 import bettertodo.core.Todo;
@@ -22,6 +20,8 @@ import bettertodo.network.PacketSender;
 import bettertodo.network.PacketTypeRegistry;
 import bettertodo.todo.TaskDatabase;
 import bettertodo.utils.GenericTuple;
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 
 public class NetTaskCreate {
 

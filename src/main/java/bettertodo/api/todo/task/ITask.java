@@ -10,9 +10,9 @@ import net.minecraft.nbt.NBTTagCompound;
 
 import org.jetbrains.annotations.NotNull;
 
+import bettertodo.api.enums.TaskState;
 import chestlib.api.properties.IPropertyContainer;
 import chestlib.api.storage.INBTSaveLoad;
-import bettertodo.api.enums.TaskState;
 
 public interface ITask extends INBTSaveLoad<NBTTagCompound>, IPropertyContainer {
 

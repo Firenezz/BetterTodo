@@ -8,14 +8,14 @@ import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.ResourceLocation;
 
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 import bettertodo.api.network.NetworkPacket;
 import bettertodo.core.Todo;
 import bettertodo.handlers.persistence.DatabasePersistence;
 import bettertodo.network.PacketSender;
 import bettertodo.network.PacketTypeRegistry;
 import bettertodo.utils.GenericTuple;
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 
 public class NetBulkSync {
 

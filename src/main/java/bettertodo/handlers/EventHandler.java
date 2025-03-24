@@ -21,16 +21,16 @@ import betterquesting.api.api.QuestingAPI;
 import betterquesting.api.questing.party.IParty;
 import betterquesting.api.questing.party.IPartyDatabase;
 import betterquesting.api2.storage.DBEntry;
+import bettertodo.client.TodoKeybindings;
+import bettertodo.client.gui.todolist.GuiTodoList;
+import bettertodo.core.Todo;
+import bettertodo.network.handlers.NetBulkSync;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import cpw.mods.fml.common.gameevent.InputEvent;
 import cpw.mods.fml.common.gameevent.PlayerEvent;
 import cpw.mods.fml.common.gameevent.TickEvent;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
-import bettertodo.client.TodoKeybindings;
-import bettertodo.client.gui.todolist.GuiTodoList;
-import bettertodo.core.Todo;
-import bettertodo.network.handlers.NetBulkSync;
 
 /// Event handling for standard quests and core BetterQuesting functionality
 public class EventHandler {

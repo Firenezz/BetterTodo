@@ -6,11 +6,11 @@ import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.nbt.NBTTagCompound;
 
 import betterquesting.network.PacketAssembly;
-import cpw.mods.fml.common.network.NetworkRegistry;
 import bettertodo.api.network.IPacketSender;
 import bettertodo.api.network.NetworkPacket;
 import bettertodo.core.Todo;
 import bettertodo.utils.BTThreadedIO;
+import cpw.mods.fml.common.network.NetworkRegistry;
 
 public class PacketSender implements IPacketSender {
 

@@ -9,14 +9,14 @@ import java.util.UUID;
 
 import net.minecraft.nbt.NBTTagCompound;
 
-import chestlib.api.properties.IPropertyContainer;
-import chestlib.api.properties.IPropertyType;
-import chestlib.storage.properties.PropertyContainer;
-import chestlib.util.nbt.NBTUuidUtil;
 import bettertodo.api.api.BetterTodoAPI;
 import bettertodo.api.todo.ITodoList;
 import bettertodo.api.todo.task.ITask;
 import bettertodo.api.todo.task.ITaskDatabase;
+import chestlib.api.properties.IPropertyContainer;
+import chestlib.api.properties.IPropertyType;
+import chestlib.storage.properties.PropertyContainer;
+import chestlib.util.nbt.NBTUuidUtil;
 
 public class TodoList implements ITodoList {
 

@@ -11,15 +11,15 @@ import net.minecraft.util.ResourceLocation;
 import org.apache.logging.log4j.Level;
 
 import betterquesting.network.PacketAssembly;
+import bettertodo.api.api.BetterTodoAPI;
+import bettertodo.core.Todo;
+import bettertodo.handlers.EventHandler;
+import bettertodo.utils.GenericTuple;
 import cpw.mods.fml.common.network.ByteBufUtils;
 import cpw.mods.fml.common.network.simpleimpl.IMessage;
 import cpw.mods.fml.common.network.simpleimpl.IMessageHandler;
 import cpw.mods.fml.common.network.simpleimpl.MessageContext;
 import io.netty.buffer.ByteBuf;
-import bettertodo.api.api.BetterTodoAPI;
-import bettertodo.core.Todo;
-import bettertodo.handlers.EventHandler;
-import bettertodo.utils.GenericTuple;
 
 /// This is the handler that deals with the byte packets from the network
 public class NetworkMessage implements IMessage {

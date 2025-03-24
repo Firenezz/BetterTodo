@@ -8,6 +8,7 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.common.util.Constants;
 
+import bettertodo.api.enums.TaskState;
 import chestlib.api.properties.IPropertyType;
 import chestlib.storage.nbt.serializers.OptionalData;
 import chestlib.storage.properties.EnumerationType;
@@ -15,7 +16,6 @@ import chestlib.storage.properties.propertytypes.PropertyTypeBase;
 import chestlib.storage.properties.propertytypes.PropertyTypeEnum;
 import chestlib.storage.properties.propertytypes.PropertyTypeString;
 import chestlib.util.nbt.NBTUuidUtil;
-import bettertodo.api.enums.TaskState;
 
 /// Props for tasks
 public class TaskProps {

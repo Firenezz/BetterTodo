@@ -3,6 +3,8 @@ package bettertodo.core;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import bettertodo.core.proxies.CommonProxy;
+import bettertodo.network.NetworkMessage;
 import cpw.mods.fml.common.Mod;
 import cpw.mods.fml.common.SidedProxy;
 import cpw.mods.fml.common.event.FMLInitializationEvent;
@@ -13,8 +15,6 @@ import cpw.mods.fml.common.event.FMLServerStoppedEvent;
 import cpw.mods.fml.common.network.NetworkRegistry;
 import cpw.mods.fml.common.network.simpleimpl.SimpleNetworkWrapper;
 import cpw.mods.fml.relauncher.Side;
-import bettertodo.core.proxies.CommonProxy;
-import bettertodo.network.NetworkMessage;
 
 @Mod(modid = Todo.MODID, version = Todo.VERSION, name = Todo.NAME, acceptedMinecraftVersions = "[1.7.10]")
 @SuppressWarnings("unused")

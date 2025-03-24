@@ -5,12 +5,6 @@ import net.minecraft.command.ServerCommandManager;
 import net.minecraft.server.MinecraftServer;
 import net.minecraftforge.common.MinecraftForge;
 
-import cpw.mods.fml.common.FMLCommonHandler;
-import cpw.mods.fml.common.event.FMLInitializationEvent;
-import cpw.mods.fml.common.event.FMLPostInitializationEvent;
-import cpw.mods.fml.common.event.FMLPreInitializationEvent;
-import cpw.mods.fml.common.event.FMLServerStartingEvent;
-import cpw.mods.fml.common.network.NetworkRegistry;
 import bettertodo.api.api.ApiReference;
 import bettertodo.api.api.BetterTodoAPI;
 import bettertodo.commands.ClearDatabasesCommand;
@@ -23,6 +17,12 @@ import bettertodo.handlers.GuiHandler;
 import bettertodo.handlers.PersistenceHandler;
 import bettertodo.network.PacketTypeRegistry;
 import bettertodo.todo.TaskDatabase;
+import cpw.mods.fml.common.FMLCommonHandler;
+import cpw.mods.fml.common.event.FMLInitializationEvent;
+import cpw.mods.fml.common.event.FMLPostInitializationEvent;
+import cpw.mods.fml.common.event.FMLPreInitializationEvent;
+import cpw.mods.fml.common.event.FMLServerStartingEvent;
+import cpw.mods.fml.common.network.NetworkRegistry;
 
 public class CommonProxy {
 
