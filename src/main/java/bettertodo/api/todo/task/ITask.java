@@ -12,11 +12,16 @@ import org.jetbrains.annotations.NotNull;
 
 import bettertodo.api.enums.TaskState;
 import chestlib.api.properties.IPropertyContainer;
+import chestlib.api.storage.IIdentifiable;
 import chestlib.api.storage.INBTSaveLoad;
 
-public interface ITask extends INBTSaveLoad<NBTTagCompound>, IPropertyContainer {
+public interface ITask extends INBTSaveLoad<NBTTagCompound>, IPropertyContainer, IIdentifiable<UUID> {
 
     UUID getID();
+
+    default void setId(UUID id) {
+
+    }
 
     void addSubTasks(@NotNull Iterable<UUID> uuids);
 

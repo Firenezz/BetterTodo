@@ -39,12 +39,7 @@ public class TaskProps {
             }
 
             try {
-                return OptionalData.readFromNBT(tag, (optionNbt) -> {
-                    if (optionNbt instanceof NBTTagCompound optionTag && nbt.getId() == Constants.NBT.TAG_COMPOUND) {
-                        return NBTUuidUtil.tryReadFromNbt("", optionTag);
-                    }
-                    return Optional.empty();
-                });
+                return OptionalData.readFromNBT(tag, TaskProps::createFromNBT);
             } catch (Exception e) {
                 return this.getDefault();
             }
@@ -54,10 +49,45 @@ public class TaskProps {
         public NBTBase writeValue(Optional<UUID> value) {
             return OptionalData.writeValue(value, (NBTUuidUtil::writeIdToNbt));
         }
+
+    };
+
+    public static final IPropertyType<Optional<UUID>> AUTHOR = new PropertyTypeBase<Optional<UUID>>(
+        new ResourceLocation(ROOT + ":author"),
+        Optional.empty()) {
+
+        @Override
+        public Optional<UUID> readValue(NBTBase nbt) {
+            if (!(nbt instanceof NBTTagCompound tag) || nbt.getId() != Constants.NBT.TAG_COMPOUND) {
+                return this.getDefault();
+            }
+
+            try {
+                return OptionalData.readFromNBT(tag, TaskProps::createFromNBT);
+            } catch (Exception e) {
+                return this.getDefault();
+            }
+        }
+
+        @Override
+        public NBTBase writeValue(Optional<UUID> value) {
+            return OptionalData.writeValue(value, (NBTUuidUtil::writeIdToNbt));
+        }
+
     };
 
     public static final IPropertyType<TaskState> STATE = new PropertyTypeEnum<>(
         new ResourceLocation(ROOT + ":state"),
         TaskState.New,
         EnumerationType.Ordinal);
+
+    public static final Optional<UUID> createFromNBT(NBTBase optionNbt) {
+        Optional<UUID> result;
+        if (optionNbt instanceof NBTTagCompound optionTag && optionNbt.getId() == Constants.NBT.TAG_COMPOUND) {
+            result = NBTUuidUtil.tryReadFromNbt("", optionTag);
+        } else {
+            result = Optional.empty();
+        }
+        return result;
+    }
 }

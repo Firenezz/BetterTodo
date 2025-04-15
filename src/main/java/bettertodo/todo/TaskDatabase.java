@@ -59,6 +59,8 @@ public class TaskDatabase extends UuidDatabase<ITask> implements ITaskDatabase {
             clear();
         }
 
+        final boolean isEmpty = this.isEmpty();
+
         for (int i = 0; i < nbt.tagCount(); i++) {
             NBTTagCompound qTag = nbt.getCompoundTagAt(i);
 
@@ -71,8 +73,9 @@ public class TaskDatabase extends UuidDatabase<ITask> implements ITaskDatabase {
                 continue;
             }
 
-            ITask task = get(taskID);
+            ITask task = isEmpty ? null : get(taskID);
             task = task != null ? task : createNew(taskID);
+            task.setId(taskID);
             task.readFromNBT(qTag);
         }
     }

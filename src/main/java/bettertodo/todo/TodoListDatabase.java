@@ -1,5 +1,6 @@
 package bettertodo.todo;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -24,6 +25,10 @@ public class TodoListDatabase extends UuidDatabase<ITodoList> implements ITodoLi
         ITodoList todoList = new TodoList();
         put(uuid, todoList);
         return todoList;
+    }
+
+    public List<ITodoList> getTodolistsOwnedBy(UUID id) {
+        return Collections.EMPTY_LIST;
     }
 
     public ITodoList createNewWithUuidGen() {

@@ -24,7 +24,7 @@ public class PacketSender implements IPacketSender {
                 payload.getHandler()
                     .toString());
 
-        BTThreadedIO.INSTANCE.enqueue(() -> {
+        BTThreadedIO.SEQUENTIAL_EXECUTOR.enqueue(() -> {
             List<NBTTagCompound> fragments = PacketAssembly.INSTANCE.splitPacket(payload.getPayload());
             for (EntityPlayerMP p : players) {
                 for (NBTTagCompound tag : fragments) {
@@ -42,7 +42,7 @@ public class PacketSender implements IPacketSender {
                 payload.getHandler()
                     .toString());
 
-        BTThreadedIO.INSTANCE.enqueue(() -> {
+        BTThreadedIO.SEQUENTIAL_EXECUTOR.enqueue(() -> {
             for (NBTTagCompound p : PacketAssembly.INSTANCE.splitPacket(payload.getPayload())) {
                 Todo.INSTANCE.network.sendToAll(new NetworkMessage(p));
             }
@@ -57,7 +57,7 @@ public class PacketSender implements IPacketSender {
                 payload.getHandler()
                     .toString());
 
-        BTThreadedIO.INSTANCE.enqueue(() -> {
+        BTThreadedIO.SEQUENTIAL_EXECUTOR.enqueue(() -> {
             for (NBTTagCompound p : PacketAssembly.INSTANCE.splitPacket(payload.getPayload())) {
                 Todo.INSTANCE.network.sendToServer(new NetworkMessage(p));
             }
@@ -72,7 +72,7 @@ public class PacketSender implements IPacketSender {
                 payload.getHandler()
                     .toString());
 
-        BTThreadedIO.INSTANCE.enqueue(() -> {
+        BTThreadedIO.SEQUENTIAL_EXECUTOR.enqueue(() -> {
             for (NBTTagCompound p : PacketAssembly.INSTANCE.splitPacket(payload.getPayload())) {
                 Todo.INSTANCE.network.sendToAllAround(new NetworkMessage(p), point);
             }
@@ -87,7 +87,7 @@ public class PacketSender implements IPacketSender {
                 payload.getHandler()
                     .toString());
 
-        BTThreadedIO.INSTANCE.enqueue(() -> {
+        BTThreadedIO.SEQUENTIAL_EXECUTOR.enqueue(() -> {
             for (NBTTagCompound p : PacketAssembly.INSTANCE.splitPacket(payload.getPayload())) {
                 Todo.INSTANCE.network.sendToDimension(new NetworkMessage(p), dimension);
             }

@@ -1,5 +1,7 @@
 package bettertodo.utils;
 
+import java.io.BufferedOutputStream;
+import java.io.DataOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
@@ -8,16 +10,15 @@ import java.io.InputStream;
 import java.nio.file.AtomicMoveNotSupportedException;
 import java.nio.file.Files;
 import java.nio.file.StandardCopyOption;
+import java.util.Optional;
 import java.util.concurrent.Future;
 
 import net.minecraft.nbt.CompressedStreamTools;
 import net.minecraft.nbt.NBTTagCompound;
 
 import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 
 import betterquesting.api.api.QuestingAPI;
-import betterquesting.api2.utils.BQThreadedIO;
 import bettertodo.api.api.BetterTodoAPI;
 
 public class NBTUtils {
@@ -34,9 +35,10 @@ public class NBTUtils {
         }
 
         try (var fos = new FileOutputStream(tmp)) {
-            // DataOutputStream dataoutputstream = new DataOutputStream(new BufferedOutputStream(fos))) {
-            // CompressedStreamTools.write(nbtTagCompound, dataoutputstream);
-            CompressedStreamTools.writeCompressed(nbtTagCompound, fos);
+            DataOutputStream dataoutputstream = new DataOutputStream(new BufferedOutputStream(fos));
+            CompressedStreamTools.write(nbtTagCompound, dataoutputstream);
+            // CompressedStreamTools.writeCompressed(nbtTagCompound, fos);
+            dataoutputstream.close();
             BetterTodoAPI.getLogger()
                 .debug("NBT written");
         } catch (Exception e) {
@@ -70,9 +72,8 @@ public class NBTUtils {
         });
     }
 
-    @Nullable
-    public static NBTTagCompound readNBTFile(File file) {
-        Future<NBTTagCompound> task = BQThreadedIO.INSTANCE.enqueue(() -> {
+    public static Optional<NBTTagCompound> readNBTFile(File file) {
+        Future<NBTTagCompound> task = BTThreadedIO.DISK_IO.enqueue(() -> {
             if (!file.exists() || !file.isFile()) {
                 return new NBTTagCompound();
             }
@@ -89,11 +90,11 @@ public class NBTUtils {
         });
 
         try {
-            return task.get(); // Wait for other scheduled file ops to finish
+            return Optional.ofNullable(task.get()); // Wait for other scheduled file ops to finish
         } catch (Exception e) {
             QuestingAPI.getLogger()
                 .error("Unable to read from file " + file, e);
-            return new NBTTagCompound();
+            return Optional.of(new NBTTagCompound());
         }
     }
 

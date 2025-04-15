@@ -7,16 +7,30 @@ import java.util.concurrent.Future;
 
 import com.google.common.util.concurrent.ThreadFactoryBuilder;
 
+import bettertodo.core.Todo;
+
 public class BTThreadedIO {
 
-    public static final BTThreadedIO INSTANCE = new BTThreadedIO();
+    /// Single threaded executor
+    public static final BTThreadedIO SEQUENTIAL_EXECUTOR = new BTThreadedIO() {
+
+        @Override
+        public void init() {
+            if (exService == null || exService.isShutdown()) {
+                exService = Executors.newSingleThreadExecutor(
+                    new ThreadFactoryBuilder().setNameFormat("BT-SEQ-%d")
+                        .build());
+            }
+        }
+    };
+    /// Multi threaded executor for IO ops
     public static final BTThreadedIO DISK_IO = new BTThreadedIO() {
 
         @Override
         public void init() {
             if (exService == null || exService.isShutdown()) {
                 exService = Executors.newCachedThreadPool(
-                    new ThreadFactoryBuilder().setNameFormat("IO-pool-%d")
+                    new ThreadFactoryBuilder().setNameFormat("BT-IO-%d")
                         .build());
             }
         }
@@ -29,9 +43,7 @@ public class BTThreadedIO {
     }
 
     public void init() {
-        if (exService == null || exService.isShutdown()) {
-            exService = Executors.newSingleThreadExecutor();
-        }
+        Todo.LOG.warn("init() wasn't overriden for BTThreadedIO");
     }
 
     public void shutdown() {

@@ -11,12 +11,14 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.util.ResourceLocation;
 
+import bettertodo.api.api.ApiReference;
+import bettertodo.api.api.BetterTodoAPI;
 import bettertodo.api.network.NetworkPacket;
 import bettertodo.api.todo.task.ITask;
+import bettertodo.api.todo.task.ITaskDatabase;
 import bettertodo.core.Todo;
 import bettertodo.network.PacketSender;
 import bettertodo.network.PacketTypeRegistry;
-import bettertodo.todo.TaskDatabase;
 import bettertodo.utils.BTThreadedIO;
 import bettertodo.utils.GenericTuple;
 import chestlib.util.nbt.NBTUuidUtil;
@@ -38,13 +40,15 @@ public class NetTaskSync {
     public static final String TASK_TAG_NAME = "task";
     public static final String TASK_LIST_NAME = "data";
 
+    static ITaskDatabase TASK_DB = BetterTodoAPI.getAPI(ApiReference.TASK_DB);
+
     public static void sendSync(@Nullable EntityPlayerMP player) {
         // TODO: Send to specific players
 
-        BTThreadedIO.INSTANCE.enqueue(() -> {
+        BTThreadedIO.SEQUENTIAL_EXECUTOR.enqueue(() -> {
             NBTTagList dataList = new NBTTagList();
 
-            final Map<UUID, ITask> taskSubset = TaskDatabase.INSTANCE;
+            final Map<UUID, ITask> taskSubset = TASK_DB;
 
             for (Map.Entry<UUID, ITask> entry : taskSubset.entrySet()) {
                 NBTTagCompound tagEntry = new NBTTagCompound();
@@ -89,7 +93,7 @@ public class NetTaskSync {
     private static void onClient(NBTTagCompound message) {
         NBTTagList data = message.getTagList(TASK_LIST_NAME, 10);
 
-        TaskDatabase.INSTANCE.clear();
+        TASK_DB.clear();
 
         for (int i = 0; i < data.tagCount(); i++) {
             NBTTagCompound tag = data.getCompoundTagAt(i);
@@ -99,10 +103,10 @@ public class NetTaskSync {
 
             UUID taskID = taskIDOptional.get();
 
-            ITask task = TaskDatabase.INSTANCE.get(taskID);
+            ITask task = TASK_DB.get(taskID);
 
             if (task == null) {
-                task = TaskDatabase.INSTANCE.createNew(taskID);
+                task = TASK_DB.createNew(taskID);
             }
 
             task.readFromNBT(tag.getCompoundTag(TASK_TAG_NAME));

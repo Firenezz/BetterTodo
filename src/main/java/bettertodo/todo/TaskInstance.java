@@ -1,7 +1,9 @@
 package bettertodo.todo;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 import java.util.stream.Collectors;
@@ -25,8 +27,12 @@ public class TaskInstance implements ITask {
 
     private static final ITaskDatabase DB = TaskDatabase.INSTANCE;
 
+    private List<UUID> subTasks = new ArrayList<>();
+
     @Nullable
     private UUID uuidParent;
+
+    private ITask parent;
 
     public TaskInstance() {
         this.setupProps();
@@ -63,19 +69,12 @@ public class TaskInstance implements ITask {
     @Override
     public void addSubTasks(@NotNull Iterable<UUID> uuids) {
         for (UUID uuid : uuids) {
-            if (!false) {
-                // placeholder
+            if (!subTasks.contains(uuid)) {
+                subTasks.add(uuid);
             } else {
                 Todo.LOG.debug("duplicate id detected: {}", uuid);
             }
         }
-        /*
-         * if (!subTasks.contains(uuid)) {
-         * subTasks.add(uuid);
-         * } else {
-         * TodoAPI.getLogger().debug("duplicate id detected: {}", uuid);
-         * }
-         */
     }
 
     @Override
@@ -105,7 +104,7 @@ public class TaskInstance implements ITask {
 
     @Override
     public Collection<UUID> getChildrensIDs() {
-        return Collections.emptyList();
+        return subTasks;
     }
 
     @Override
@@ -116,6 +115,20 @@ public class TaskInstance implements ITask {
                 .collect(Collectors.toList()));
     }
 
+    public void setUuidParent(UUID id) {
+        if (id != null) {
+            parent = DB.get(id);
+        }
+        this.uuidParent = id;
+    }
+
+    public void setParent(ITask task) {
+        if (task != null) {
+            this.uuidParent = task.getID();
+        }
+        parent = task;
+    }
+
     @Override
     public NBTTagCompound writeToNBT(NBTTagCompound nbt) {
         if (uuidParent != null) {
@@ -123,6 +136,8 @@ public class TaskInstance implements ITask {
         }
 
         nbt.setTag("properties", taskInfo.writeToNBT(new NBTTagCompound()));
+
+        nbt.setTag("subTasks", NBTUuidUtil.writeIds(this.subTasks));
 
         return nbt;
     }

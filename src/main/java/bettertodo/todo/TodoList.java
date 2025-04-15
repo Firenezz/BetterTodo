@@ -9,6 +9,8 @@ import java.util.UUID;
 
 import net.minecraft.nbt.NBTTagCompound;
 
+import org.jetbrains.annotations.NotNull;
+
 import bettertodo.api.api.BetterTodoAPI;
 import bettertodo.api.todo.ITodoList;
 import bettertodo.api.todo.task.ITask;
@@ -25,6 +27,9 @@ public class TodoList implements ITodoList {
     public List<UUID> Task = new ArrayList<>();
     private List<ITask> TaskCache;
 
+    @NotNull
+    private UUID owner;
+
     private ITaskDatabase TaskDatabase = BetterTodoAPI.getAPI(TASK_DB);
 
     @Override
@@ -35,6 +40,8 @@ public class TodoList implements ITodoList {
     @Override
     public NBTTagCompound writeToNBT(NBTTagCompound nbtTagCompound) {
         // first write fields
+
+        nbtTagCompound.setTag("owner", NBTUuidUtil.writeIdToNbt(owner));
 
         nbtTagCompound.setTag("subTask", NBTUuidUtil.writeIds(Task));
 
