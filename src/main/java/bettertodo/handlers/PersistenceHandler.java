@@ -50,6 +50,7 @@ public class PersistenceHandler {
     @SubscribeEvent
     public void onWorldSave(WorldEvent.Load event) {
         if (!event.world.isRemote && BetterTodoSettings.curWorldDir != null && event.world.provider.dimensionId == 0) {
+            BTScheduledJob.SCHEDULED_JOB.init();
             DatabasePersistence.INSTANCE.loadDatabases();
         }
     }

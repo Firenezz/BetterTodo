@@ -3,6 +3,7 @@ package bettertodo.handlers.persistence;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Future;
 import java.util.concurrent.TimeUnit;
 
@@ -13,9 +14,11 @@ import net.minecraft.server.MinecraftServer;
 import betterquesting.core.BetterQuesting;
 import bettertodo.api.api.BetterTodoAPI;
 import bettertodo.core.BetterTodoSettings;
+import bettertodo.core.Todo;
 import bettertodo.todo.TaskDatabase;
 import bettertodo.todo.TodoListDatabase;
 import bettertodo.utils.BTScheduledJob;
+import bettertodo.utils.BTThreadedIO;
 import bettertodo.utils.NBTUtils;
 import chestlib.api.versionning.Version;
 
@@ -60,6 +63,7 @@ public class DatabasePersistence {
             .orElse(new NBTTagCompound());
 
         TaskDatabase.INSTANCE.readFromNBT(nbt.getTagList("tasks", 10), false);
+        TaskDatabase.INSTANCE.readFromNBT(nbt.getTagList("lost_entries", 10), false);
     }
 
     public void loadTodoList() {
@@ -85,7 +89,20 @@ public class DatabasePersistence {
     public Future<Void> saveTasks() {
         NBTTagCompound nbt = new NBTTagCompound();
 
-        nbt.setTag("tasks", TaskDatabase.INSTANCE.writeToNBT(new NBTTagList(), null));
+        Future<NBTTagList> tasksFuture = BTThreadedIO.DISK_IO
+            .enqueue(() -> TaskDatabase.INSTANCE.writeToNBT(new NBTTagList(), null));
+        Future<NBTTagList> lost_entriesFuture = BTThreadedIO.DISK_IO
+            .enqueue(() -> TaskDatabase.LOST_ENTRIES.writeToNBT(new NBTTagList(), null));
+
+        try {
+            nbt.setTag("tasks", tasksFuture.get());
+            nbt.setTag("lost_entries", lost_entriesFuture.get());
+        } catch (InterruptedException e) {
+            Todo.LOG.error("SaveTask got interrupted");
+            Todo.LOG.error(e);
+        } catch (ExecutionException e) {
+            throw new RuntimeException(e);
+        }
         nbt.setTag("version", CUR_VERSION.writeToNBT(new NBTTagCompound()));
 
         return NBTUtils.writeNBTToFileSafe(fileDatabase, nbt);

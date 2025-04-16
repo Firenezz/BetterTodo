@@ -14,6 +14,7 @@ import org.jetbrains.annotations.Nullable;
 import bettertodo.api.api.BetterTodoAPI;
 import bettertodo.api.todo.task.ITask;
 import bettertodo.api.todo.task.ITaskDatabase;
+import bettertodo.core.Todo;
 import chestlib.api.database.UuidDatabase;
 import chestlib.util.nbt.NBTUuidUtil;
 
@@ -90,10 +91,16 @@ public class TaskDatabase extends UuidDatabase<ITask> implements ITaskDatabase {
             Optional<UUID> parent = iTask.getParentID();
             if (parent.isPresent() && !containsKey(parent.get())) {
                 lostTasks.put(uuid, iTask);
+                TaskDatabase.INSTANCE.remove(uuid);
             }
         }));
 
-        TaskDatabase.LOST_ENTRIES.putAll(lostTasks);
+        if (!lostTasks.isEmpty()) {
+            Todo.LOG.info("Lost tasks have been found and added to the Lost Entries database");
+            // TODO: add info to show the db as a command for admins
+            TaskDatabase.LOST_ENTRIES.putAll(lostTasks);
+        }
+
     }
 
 }
