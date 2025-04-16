@@ -4,6 +4,7 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.Future;
+import java.util.concurrent.TimeUnit;
 
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
@@ -11,9 +12,10 @@ import net.minecraft.server.MinecraftServer;
 
 import betterquesting.core.BetterQuesting;
 import bettertodo.api.api.BetterTodoAPI;
-import bettertodo.core.TodoSettings;
+import bettertodo.core.BetterTodoSettings;
 import bettertodo.todo.TaskDatabase;
 import bettertodo.todo.TodoListDatabase;
+import bettertodo.utils.BTScheduledJob;
 import bettertodo.utils.NBTUtils;
 import chestlib.api.versionning.Version;
 
@@ -28,24 +30,26 @@ public class DatabasePersistence {
 
     private File rootDir;
 
-    private void setFiles(MinecraftServer server) {
+    public void initFiles(MinecraftServer server) {
         if (BetterQuesting.proxy.isClient()) {
-            TodoSettings.curWorldDir = server.getFile("saves/" + server.getFolderName() + "/bettertodo");
+            BetterTodoSettings.curWorldDir = server.getFile("saves/" + server.getFolderName() + "/bettertodo");
             rootDir = server.getFile("saves/" + server.getFolderName());
         } else {
-            TodoSettings.curWorldDir = server.getFile(server.getFolderName() + "/bettertodo");
+            BetterTodoSettings.curWorldDir = server.getFile(server.getFolderName() + "/bettertodo");
             rootDir = server.getFile(server.getFolderName());
         }
 
-        fileDatabase = new File(TodoSettings.curWorldDir, "db_tasks.nbt");
-        fileTodolistDatabase = new File(TodoSettings.curWorldDir, "db_todolist.nbt");
+        fileDatabase = new File(BetterTodoSettings.curWorldDir, "db_tasks.nbt");
+        fileTodolistDatabase = new File(BetterTodoSettings.curWorldDir, "db_todolist.nbt");
     }
 
-    public void loadDatabases(MinecraftServer server) {
-        setFiles(server);
-
+    public void loadDatabases() {
+        if (fileDatabase == null || fileTodolistDatabase == null)
+            throw new RuntimeException("loadDatabase called without files initialized");
         loadTodoList();
         loadTasks();
+
+        startIntegrityChecks();
 
         BetterTodoAPI.getLogger()
             .info("Loaded {} tasks", TaskDatabase.INSTANCE.size());
@@ -63,6 +67,11 @@ public class DatabasePersistence {
             .orElse(new NBTTagCompound());
 
         TaskDatabase.INSTANCE.readFromNBT(nbt.getTagList("tasks", 10), false);
+    }
+
+    private void startIntegrityChecks() {
+        BTScheduledJob.SCHEDULED_JOB
+            .enqueueWithFixedDelay(TaskDatabase.INSTANCE::checkIntegrity, 1, 10, TimeUnit.SECONDS);
     }
 
     public List<Future<Void>> saveDatabases() {

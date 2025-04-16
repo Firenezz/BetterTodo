@@ -5,6 +5,8 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
 
+import org.jetbrains.annotations.NotNull;
+
 import com.google.common.util.concurrent.ThreadFactoryBuilder;
 
 import bettertodo.core.Todo;
@@ -50,21 +52,27 @@ public class BTThreadedIO {
         exService.shutdownNow();
     }
 
-    public void enqueue(Runnable job) {
+    /// Submits a Runnable task for execution and returns a Future representing that task.
+    /// The Future's get method will return null upon successful completion.
+    ///
+    /// @throws RuntimeException if the executor is null
+    /// or the executor is shutdown
+    public void enqueue(@NotNull Runnable job) {
         if (exService == null || exService.isShutdown()) {
             throw new RuntimeException("Attempted to schedule task before service was initialised!");
-        } else if (job == null) {
-            throw new NullPointerException("Attempted to schedule null job!");
         }
 
         exService.submit(job);
     }
 
-    public <T> Future<T> enqueue(Callable<T> job) {
+    /// Submits a Runnable task that returns a result for execution and returns a Future representing that task.
+    /// The Future's get method will return null upon successful completion.
+    ///
+    /// @throws RuntimeException if the executor is null
+    /// or the executor is shutdown
+    public <T> Future<T> enqueue(@NotNull Callable<T> job) {
         if (exService == null || exService.isShutdown()) {
             throw new RuntimeException("Attempted to schedule task before service was initialised!");
-        } else if (job == null) {
-            throw new NullPointerException("Attempted to schedule null job!");
         }
 
         return exService.submit(job);

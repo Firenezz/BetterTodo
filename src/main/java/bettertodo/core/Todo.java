@@ -4,6 +4,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import bettertodo.core.proxies.CommonProxy;
+import bettertodo.handlers.PersistenceHandler;
 import bettertodo.network.NetworkMessage;
 import cpw.mods.fml.common.Mod;
 import cpw.mods.fml.common.SidedProxy;
@@ -67,6 +68,6 @@ public class Todo {
 
     @Mod.EventHandler
     public void serverStop(FMLServerStoppedEvent event) {
-
+        PersistenceHandler.INSTANCE.serverStop(event);
     }
 }

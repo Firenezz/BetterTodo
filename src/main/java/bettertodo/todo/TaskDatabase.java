@@ -1,6 +1,8 @@
 package bettertodo.todo;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -18,6 +20,8 @@ import chestlib.util.nbt.NBTUuidUtil;
 public class TaskDatabase extends UuidDatabase<ITask> implements ITaskDatabase {
 
     public static final TaskDatabase INSTANCE = new TaskDatabase();
+    public static final TaskDatabase DELETED_ENTRIES = new TaskDatabase();
+    public static final TaskDatabase LOST_ENTRIES = new TaskDatabase();
 
     @Override
     public ITask createNew(UUID uuid) {
@@ -78,6 +82,18 @@ public class TaskDatabase extends UuidDatabase<ITask> implements ITaskDatabase {
             task.setId(taskID);
             task.readFromNBT(qTag);
         }
+    }
+
+    public void checkIntegrity() {
+        Map<UUID, ITask> lostTasks = new HashMap<>();
+        this.forEach(((uuid, iTask) -> {
+            Optional<UUID> parent = iTask.getParentID();
+            if (parent.isPresent() && !containsKey(parent.get())) {
+                lostTasks.put(uuid, iTask);
+            }
+        }));
+
+        TaskDatabase.LOST_ENTRIES.putAll(lostTasks);
     }
 
 }

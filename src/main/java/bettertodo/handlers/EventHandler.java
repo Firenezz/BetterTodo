@@ -3,6 +3,7 @@ package bettertodo.handlers;
 import static betterquesting.api.api.ApiReference.PARTY_DB;
 
 import java.util.ArrayDeque;
+import java.util.UUID;
 import java.util.concurrent.Callable;
 import java.util.concurrent.FutureTask;
 
@@ -25,6 +26,7 @@ import bettertodo.client.TodoKeybindings;
 import bettertodo.client.gui.todolist.GuiTodoList;
 import bettertodo.core.Todo;
 import bettertodo.network.handlers.NetBulkSync;
+import bettertodo.todo.TodoListDatabase;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import cpw.mods.fml.common.gameevent.InputEvent;
 import cpw.mods.fml.common.gameevent.PlayerEvent;
@@ -52,6 +54,16 @@ public class EventHandler {
                 .equalsIgnoreCase("Developer")) {
                 mc.displayGuiScreen(new GuiTodoList(null)); // Testing purposes
             } else {
+
+                TodoListDatabase.INSTANCE.createNewWithUuidGen();
+
+                UUID temp = TodoListDatabase.INSTANCE.keySet()
+                    .stream()
+                    .findFirst()
+                    .get();
+
+                Todo.LOG.info("idL:" + temp.getLeastSignificantBits() + "\nidH:" + temp.getMostSignificantBits());
+
                 mc.thePlayer.openGui(
                     Todo.INSTANCE,
                     GuiHandler.GUI_LIST,

@@ -37,7 +37,7 @@ public class TodoListDatabase extends UuidDatabase<ITodoList> implements ITodoLi
 
     @Override
     public NBTTagList writeToNBT(NBTTagList nbt, @Nullable List<UUID> subset) {
-        orderedEntries().filter((entry) -> subset != null && subset.contains(entry.getKey()))
+        orderedEntries().filter((entry) -> subset == null || subset.contains(entry.getKey()))
             .forEach(entry -> {
                 if (entry.getValue() == null) {
                     BetterTodoAPI.getLogger()

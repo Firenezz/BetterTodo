@@ -11,4 +11,6 @@ public interface ITaskDatabase extends IUuidDatabase<ITask>, INBTPartial<NBTTagL
 
     ITask createNew(UUID uuid);
 
+    void checkIntegrity();
+
 }

@@ -132,7 +132,7 @@ public class TaskInstance implements ITask {
     @Override
     public NBTTagCompound writeToNBT(NBTTagCompound nbt) {
         if (uuidParent != null) {
-            NBTUuidUtil.writeIdToNbt("p", uuidParent, nbt);
+            NBTUuidUtil.writeIdToNbt("parent", uuidParent, nbt);
         }
 
         nbt.setTag("properties", taskInfo.writeToNBT(new NBTTagCompound()));
@@ -144,8 +144,10 @@ public class TaskInstance implements ITask {
 
     @Override
     public void readFromNBT(NBTTagCompound nbt) {
-        uuidParent = NBTUuidUtil.tryReadFromNbt("p", nbt)
+        uuidParent = NBTUuidUtil.tryReadFromNbt("", nbt.getCompoundTag("parent"))
             .orElse(null);
+
+        subTasks = NBTUuidUtil.readIds(nbt, "subTasks");
 
         taskInfo.readFromNBT(nbt.getCompoundTag("properties"));
     }

@@ -8,11 +8,12 @@ import java.util.concurrent.Future;
 import net.minecraft.server.MinecraftServer;
 import net.minecraftforge.event.world.WorldEvent;
 
-import betterquesting.api.storage.BQ_Settings;
 import betterquesting.core.BetterQuesting;
+import bettertodo.core.BetterTodoSettings;
 import bettertodo.handlers.persistence.DatabasePersistence;
-import cpw.mods.fml.common.Mod;
+import bettertodo.utils.BTScheduledJob;
 import cpw.mods.fml.common.event.FMLServerStartingEvent;
+import cpw.mods.fml.common.event.FMLServerStoppedEvent;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 
 public class PersistenceHandler {
@@ -41,22 +42,29 @@ public class PersistenceHandler {
 
     @SubscribeEvent
     public void onWorldSave(WorldEvent.Save event) {
-        if (!event.world.isRemote && BQ_Settings.curWorldDir != null && event.world.provider.dimensionId == 0) {
+        if (!event.world.isRemote && BetterTodoSettings.curWorldDir != null && event.world.provider.dimensionId == 0) {
             PersistenceHandler.INSTANCE.saveData();
         }
     }
 
     @SubscribeEvent
     public void onWorldSave(WorldEvent.Load event) {
-        if (!event.world.isRemote && BQ_Settings.curWorldDir != null && event.world.provider.dimensionId == 0) {
-            PersistenceHandler.INSTANCE.saveData();
+        if (!event.world.isRemote && BetterTodoSettings.curWorldDir != null && event.world.provider.dimensionId == 0) {
+            DatabasePersistence.INSTANCE.loadDatabases();
         }
     }
 
-    @Mod.EventHandler
     public void serverStart(FMLServerStartingEvent event) {
         MinecraftServer server = event.getServer();
+        BTScheduledJob.SCHEDULED_JOB.init();
 
-        DatabasePersistence.INSTANCE.loadDatabases(server);
+        DatabasePersistence.INSTANCE.initFiles(server);
+        DatabasePersistence.INSTANCE.loadDatabases();
+    }
+
+    public void serverStop(FMLServerStoppedEvent event) {
+        BTScheduledJob.SCHEDULED_JOB.shutdown();
+
+        unload();
     }
 }

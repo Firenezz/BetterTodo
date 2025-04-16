@@ -8,8 +8,7 @@ import java.util.Optional;
 import java.util.UUID;
 
 import net.minecraft.nbt.NBTTagCompound;
-
-import org.jetbrains.annotations.NotNull;
+import net.minecraftforge.common.util.Constants;
 
 import bettertodo.api.api.BetterTodoAPI;
 import bettertodo.api.todo.ITodoList;
@@ -24,26 +23,31 @@ public class TodoList implements ITodoList {
 
     IPropertyContainer todoInfo = new PropertyContainer();
 
-    public List<UUID> Task = new ArrayList<>();
+    public List<UUID> Tasks = new ArrayList<>();
     private List<ITask> TaskCache;
 
-    @NotNull
     private UUID owner;
 
-    private ITaskDatabase TaskDatabase = BetterTodoAPI.getAPI(TASK_DB);
+    private static ITaskDatabase TaskDatabase = BetterTodoAPI.getAPI(TASK_DB);
 
     @Override
     public void readFromNBT(NBTTagCompound nbtTagCompound) {
+        if (nbtTagCompound.hasKey("owner", Constants.NBT.TAG_COMPOUND))
+            owner = NBTUuidUtil.readIdFromNbt(nbtTagCompound.getCompoundTag("owner"));
 
+        Tasks = NBTUuidUtil.readIds(nbtTagCompound, "tasks");
+
+        // then the property container
+        todoInfo.readFromNBT(nbtTagCompound.getCompoundTag("properties"));
     }
 
     @Override
     public NBTTagCompound writeToNBT(NBTTagCompound nbtTagCompound) {
         // first write fields
 
-        nbtTagCompound.setTag("owner", NBTUuidUtil.writeIdToNbt(owner));
+        if (owner != null) nbtTagCompound.setTag("owner", NBTUuidUtil.writeIdToNbt(owner));
 
-        nbtTagCompound.setTag("subTask", NBTUuidUtil.writeIds(Task));
+        nbtTagCompound.setTag("tasks", NBTUuidUtil.writeIds(Tasks));
 
         // then the property container
         nbtTagCompound.setTag("properties", todoInfo.writeToNBT(new NBTTagCompound()));
