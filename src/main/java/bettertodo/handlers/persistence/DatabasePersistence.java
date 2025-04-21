@@ -18,7 +18,7 @@ import bettertodo.core.Todo;
 import bettertodo.todo.TaskDatabase;
 import bettertodo.todo.TodoListDatabase;
 import bettertodo.utils.BTScheduledJob;
-import bettertodo.utils.BTThreadedIO;
+import bettertodo.utils.BTThreaded;
 import bettertodo.utils.NBTUtils;
 import chestlib.api.versionning.Version;
 
@@ -89,9 +89,9 @@ public class DatabasePersistence {
     public Future<Void> saveTasks() {
         NBTTagCompound nbt = new NBTTagCompound();
 
-        Future<NBTTagList> tasksFuture = BTThreadedIO.DISK_IO
+        Future<NBTTagList> tasksFuture = BTThreaded.DISK_IO
             .enqueue(() -> TaskDatabase.INSTANCE.writeToNBT(new NBTTagList(), null));
-        Future<NBTTagList> lost_entriesFuture = BTThreadedIO.DISK_IO
+        Future<NBTTagList> lost_entriesFuture = BTThreaded.DISK_IO
             .enqueue(() -> TaskDatabase.LOST_ENTRIES.writeToNBT(new NBTTagList(), null));
 
         try {

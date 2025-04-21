@@ -19,7 +19,7 @@ import bettertodo.api.todo.task.ITaskDatabase;
 import bettertodo.core.Todo;
 import bettertodo.network.PacketSender;
 import bettertodo.network.PacketTypeRegistry;
-import bettertodo.utils.BTThreadedIO;
+import bettertodo.utils.BTThreaded;
 import bettertodo.utils.GenericTuple;
 import chestlib.util.nbt.NBTUuidUtil;
 import cpw.mods.fml.relauncher.Side;
@@ -45,7 +45,7 @@ public class NetTaskSync {
     public static void sendSync(@Nullable EntityPlayerMP player) {
         // TODO: Send to specific players
 
-        BTThreadedIO.SEQUENTIAL_EXECUTOR.enqueue(() -> {
+        BTThreaded.SEQUENTIAL_EXECUTOR.enqueue(() -> {
             NBTTagList dataList = new NBTTagList();
 
             final Map<UUID, ITask> taskSubset = TASK_DB;

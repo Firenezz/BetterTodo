@@ -11,10 +11,10 @@ import com.google.common.util.concurrent.ThreadFactoryBuilder;
 
 import bettertodo.core.Todo;
 
-public class BTThreadedIO {
+public class BTThreaded {
 
     /// Single threaded executor
-    public static final BTThreadedIO SEQUENTIAL_EXECUTOR = new BTThreadedIO() {
+    public static final BTThreaded SEQUENTIAL_EXECUTOR = new BTThreaded() {
 
         @Override
         public void init() {
@@ -26,7 +26,7 @@ public class BTThreadedIO {
         }
     };
     /// Multi threaded executor for IO ops
-    public static final BTThreadedIO DISK_IO = new BTThreadedIO() {
+    public static final BTThreaded DISK_IO = new BTThreaded() {
 
         @Override
         public void init() {
@@ -37,10 +37,22 @@ public class BTThreadedIO {
             }
         }
     };
+    /// Multi threaded executor for General ops
+    public static final BTThreaded GENERAL = new BTThreaded() {
+
+        @Override
+        public void init() {
+            if (exService == null || exService.isShutdown()) {
+                exService = Executors.newCachedThreadPool(
+                    new ThreadFactoryBuilder().setNameFormat("BT-GENERAL-%d")
+                        .build());
+            }
+        }
+    };
 
     ExecutorService exService;
 
-    public BTThreadedIO() {
+    public BTThreaded() {
         this.init();
     }
 

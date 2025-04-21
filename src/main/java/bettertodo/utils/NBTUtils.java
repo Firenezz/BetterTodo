@@ -65,7 +65,7 @@ public class NBTUtils {
 
     public static Future<Void> writeNBTToFileSafe(File file, NBTTagCompound nbtTagCompound) {
 
-        return BTThreadedIO.DISK_IO.enqueue(() -> {
+        return BTThreaded.DISK_IO.enqueue(() -> {
             writeNBTToFile(file, nbtTagCompound);
 
             return null;
@@ -73,7 +73,7 @@ public class NBTUtils {
     }
 
     public static Optional<NBTTagCompound> readNBTFile(File file) {
-        Future<NBTTagCompound> task = BTThreadedIO.DISK_IO.enqueue(() -> {
+        Future<NBTTagCompound> task = BTThreaded.DISK_IO.enqueue(() -> {
             if (!file.exists() || !file.isFile()) {
                 return new NBTTagCompound();
             }

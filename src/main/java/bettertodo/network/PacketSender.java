@@ -9,7 +9,7 @@ import betterquesting.network.PacketAssembly;
 import bettertodo.api.network.IPacketSender;
 import bettertodo.api.network.NetworkPacket;
 import bettertodo.core.Todo;
-import bettertodo.utils.BTThreadedIO;
+import bettertodo.utils.BTThreaded;
 import cpw.mods.fml.common.network.NetworkRegistry;
 
 public class PacketSender implements IPacketSender {
@@ -24,7 +24,7 @@ public class PacketSender implements IPacketSender {
                 payload.getHandler()
                     .toString());
 
-        BTThreadedIO.SEQUENTIAL_EXECUTOR.enqueue(() -> {
+        BTThreaded.SEQUENTIAL_EXECUTOR.enqueue(() -> {
             List<NBTTagCompound> fragments = PacketAssembly.INSTANCE.splitPacket(payload.getPayload());
             for (EntityPlayerMP p : players) {
                 for (NBTTagCompound tag : fragments) {
@@ -42,7 +42,7 @@ public class PacketSender implements IPacketSender {
                 payload.getHandler()
                     .toString());
 
-        BTThreadedIO.SEQUENTIAL_EXECUTOR.enqueue(() -> {
+        BTThreaded.SEQUENTIAL_EXECUTOR.enqueue(() -> {
             for (NBTTagCompound p : PacketAssembly.INSTANCE.splitPacket(payload.getPayload())) {
                 Todo.INSTANCE.network.sendToAll(new NetworkMessage(p));
             }
@@ -57,7 +57,7 @@ public class PacketSender implements IPacketSender {
                 payload.getHandler()
                     .toString());
 
-        BTThreadedIO.SEQUENTIAL_EXECUTOR.enqueue(() -> {
+        BTThreaded.SEQUENTIAL_EXECUTOR.enqueue(() -> {
             for (NBTTagCompound p : PacketAssembly.INSTANCE.splitPacket(payload.getPayload())) {
                 Todo.INSTANCE.network.sendToServer(new NetworkMessage(p));
             }
@@ -72,7 +72,7 @@ public class PacketSender implements IPacketSender {
                 payload.getHandler()
                     .toString());
 
-        BTThreadedIO.SEQUENTIAL_EXECUTOR.enqueue(() -> {
+        BTThreaded.SEQUENTIAL_EXECUTOR.enqueue(() -> {
             for (NBTTagCompound p : PacketAssembly.INSTANCE.splitPacket(payload.getPayload())) {
                 Todo.INSTANCE.network.sendToAllAround(new NetworkMessage(p), point);
             }
@@ -87,7 +87,7 @@ public class PacketSender implements IPacketSender {
                 payload.getHandler()
                     .toString());
 
-        BTThreadedIO.SEQUENTIAL_EXECUTOR.enqueue(() -> {
+        BTThreaded.SEQUENTIAL_EXECUTOR.enqueue(() -> {
             for (NBTTagCompound p : PacketAssembly.INSTANCE.splitPacket(payload.getPayload())) {
                 Todo.INSTANCE.network.sendToDimension(new NetworkMessage(p), dimension);
             }

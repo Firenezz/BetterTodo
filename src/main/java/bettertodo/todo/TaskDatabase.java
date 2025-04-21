@@ -85,6 +85,11 @@ public class TaskDatabase extends UuidDatabase<ITask> implements ITaskDatabase {
         }
     }
 
+    public void removeTask(UUID uuid) {
+        // tree is small so recursive is fine and fix if its a problem
+
+    }
+
     public void checkIntegrity() {
         Map<UUID, ITask> lostTasks = new HashMap<>();
         this.forEach(((uuid, iTask) -> {
@@ -100,7 +105,21 @@ public class TaskDatabase extends UuidDatabase<ITask> implements ITaskDatabase {
             // TODO: add info to show the db as a command for admins
             TaskDatabase.LOST_ENTRIES.putAll(lostTasks);
         }
+    }
 
+    private synchronized void checkChilds() {
+
+    }
+
+    private synchronized void checkParents() {
+        Map<UUID, ITask> lostTasks = new HashMap<>();
+        this.forEach(((uuid, iTask) -> {
+            Optional<UUID> parent = iTask.getParentID();
+            if (parent.isPresent() && !containsKey(parent.get())) {
+                lostTasks.put(uuid, iTask);
+                TaskDatabase.INSTANCE.remove(uuid);
+            }
+        }));
     }
 
 }
