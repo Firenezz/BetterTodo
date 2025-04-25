@@ -12,6 +12,7 @@ import net.minecraftforge.common.util.Constants;
 
 import bettertodo.api.api.BetterTodoAPI;
 import bettertodo.api.todo.ITodoList;
+import bettertodo.api.todo.Ownership;
 import bettertodo.api.todo.task.ITask;
 import bettertodo.api.todo.task.ITaskDatabase;
 import chestlib.api.properties.IPropertyContainer;
@@ -26,14 +27,29 @@ public class TodoList implements ITodoList {
     public List<UUID> Tasks = new ArrayList<>();
     private List<ITask> TaskCache;
 
-    private UUID owner;
+    private Ownership owner;
 
     private static ITaskDatabase TaskDatabase = BetterTodoAPI.getAPI(TASK_DB);
 
+    private void refreshCache() {
+        TaskCache = TodoList.TaskDatabase.getAll(Tasks)
+            .toList();
+    }
+
     @Override
     public void readFromNBT(NBTTagCompound nbtTagCompound) {
-        if (nbtTagCompound.hasKey("owner", Constants.NBT.TAG_COMPOUND))
-            owner = NBTUuidUtil.readIdFromNbt(nbtTagCompound.getCompoundTag("owner"));
+        if (nbtTagCompound.hasKey("owner", Constants.NBT.TAG_COMPOUND)) {
+            NBTTagCompound nbtOwner = nbtTagCompound.getCompoundTag("owner");
+            byte ownerType = nbtTagCompound.getByte("type");
+            UUID owner = NBTUuidUtil.readIdFromNbt(nbtTagCompound.getCompoundTag("id"));
+
+            /*
+             * switch (ownerType) {
+             * Ownership.PLAYER ->
+             * default -> throw new IllegalStateException("Unexpected value: " + ownerType);
+             * }
+             */
+        }
 
         Tasks = NBTUuidUtil.readIds(nbtTagCompound, "tasks");
 
@@ -62,17 +78,23 @@ public class TodoList implements ITodoList {
 
     @Override
     public Optional<UUID> removeTask(UUID uuidTask) {
+        if (this.Tasks.remove(uuidTask)) {
+            refreshCache();
+            return Optional.of(uuidTask);
+        }
         return Optional.empty();
     }
 
     @Override
-    public Optional<UUID> removeTask(ITask Task) {
-        return Optional.empty();
+    public Optional<UUID> removeTask(ITask task) {
+        return removeTask(task.getID());
     }
 
     @Override
     public void attachTask(UUID uuid) {
+        Tasks.add(uuid);
 
+        refreshCache();
     }
 
     @Override
